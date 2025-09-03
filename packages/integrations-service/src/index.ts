@@ -36,7 +36,7 @@ app.post("/webhook", (req, res) => {
     res.status(200).json({ status: "received", processedMessage: message });
 });
 
-
 // Expose the Express app as a Cloud Function named "api"
 // This groups all the app's routes under a single function.
+
 export const api = functions.https.onRequest(app);
