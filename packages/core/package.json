@@ -1,0 +1,15 @@
+{
+  "name": "@my-phantom/core",
+  "version": "1.0.0",
+  "main": "dist/models.js",
+  "types": "dist/models.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "firebase-admin": "^12.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
