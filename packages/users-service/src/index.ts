@@ -33,6 +33,7 @@ app.get("/:id", (req, res) => {
     res.status(200).json(mockUser);
 });
 
+
 // Expose the Express app as a Cloud Function named "api"
 // This groups all the app's routes under a single function.
 
