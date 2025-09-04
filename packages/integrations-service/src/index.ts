@@ -6,6 +6,7 @@ import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
 import * as jwt from "jsonwebtoken";
 import { google } from "googleapis";
 
+
 // Safely initialize the Firebase Admin SDK to prevent re-initialization
 if (admin.apps.length === 0) {
   admin.initializeApp();
@@ -27,6 +28,7 @@ async function getServiceAccountKey() {
     });
     const payload = version.payload?.data?.toString();
     if (!payload) throw new Error("Could not retrieve service account key.");
+
     serviceAccountKey = JSON.parse(payload);
     return serviceAccountKey;
 }
@@ -60,6 +62,7 @@ async function getOAuth2Client() {
 
 app.get("/", (req, res) => res.status(200).json({ message: "Integrations service is up and running." }));
 
+
 app.post("/webhook", (req, res) => {
     const payload = req.body;
     const message: Partial<ChatMessage> = {
@@ -71,6 +74,7 @@ app.post("/webhook", (req, res) => {
     console.log("Received and processed webhook into ChatMessage:", message);
     res.status(200).json({ status: "received", processedMessage: message });
 });
+
 
 app.post("/generate-gemini-token", async (req, res) => {
     try {
@@ -84,6 +88,7 @@ app.post("/generate-gemini-token", async (req, res) => {
         const claims = { iss: key.client_email, sub: key.client_email, aud: "https://generativelanguage.googleapis.com/", iat: now, exp: expiry, session_id: sessionId, user_id: userId };
         const token = jwt.sign(claims, key.private_key, { algorithm: 'RS256' });
         res.status(200).json({ token });
+
     } catch (error) {
         console.error("Error generating Gemini Live token:", error);
         const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
@@ -147,4 +152,5 @@ app.get("/classroom/courses", async (req, res) => {
 });
 
 // Expose the Express app as a Cloud Function
+
 export const api = functions.https.onRequest(app);
