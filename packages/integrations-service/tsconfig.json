@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es2016",
     "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "dist",
+    "sourceMap": true,
     "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "target": "es2017",
+    "composite": true,
+    "declaration": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ]
+
 }
