@@ -1,4 +1,5 @@
-import express from "express";
+import express, { Request, Response } from "express";
+
 import * as admin from "firebase-admin";
 import { User } from "@my-phantom/core/models";
 
@@ -12,11 +13,12 @@ if (admin.apps.length === 0) {
 const app = express();
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Users service is up and running." });
 });
 
-app.get("/:id", (req, res) => {
+app.get("/:id", (req: Request, res: Response) => {
+
     const userId = req.params.id;
     const mockUser: User = {
         id: userId,

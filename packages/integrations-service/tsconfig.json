@@ -7,6 +7,8 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
+    "esModuleInterop": true,
+
     "composite": true,
     "declaration": true
   },

@@ -1,4 +1,5 @@
-import express from "express";
+import express, { Request, Response } from "express";
+
 import * as admin from "firebase-admin";
 import { google } from "googleapis";
 import * as jwt from "jsonwebtoken";
@@ -53,10 +54,10 @@ async function getOAuth2Client() {
 
 // --- API Endpoints ---
 
-app.get("/", (req, res) => res.status(200).json({ message: "Integrations service is up and running." }));
+app.get("/", (req: Request, res: Response) => res.status(200).json({ message: "Integrations service is up and running." }));
 
+app.post("/generate-gemini-token", async (req: Request, res: Response) => {
 
-app.post("/generate-gemini-token", async (req, res) => {
     try {
         const { sessionId, userId } = req.body;
         if (!sessionId || !userId) {
@@ -75,7 +76,8 @@ app.post("/generate-gemini-token", async (req, res) => {
     }
 });
 
-app.post("/google-oauth-callback", async (req, res) => {
+app.post("/google-oauth-callback", async (req: Request, res: Response) => {
+
     try {
         const { code, userId } = req.body;
         if (!code || !userId) {
@@ -96,7 +98,8 @@ app.post("/google-oauth-callback", async (req, res) => {
     }
 });
 
-app.get("/classroom/courses", async (req, res) => {
+app.get("/classroom/courses", async (req: Request, res: Response) => {
+
     try {
         const userId = req.query.userId as string;
         if (!userId) {
