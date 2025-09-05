@@ -21,6 +21,7 @@ export interface User {
   photoURL?: string; // URL for the user's profile picture
   createdAt: firestore.Timestamp; // Server-side timestamp of account creation
   googleRefreshToken?: string; // OAuth 2.0 refresh token for Google APIs (e.g., Classroom)
+
   // Add any other user-specific profile fields here
   // e.g., learningGoals: string[];
 }

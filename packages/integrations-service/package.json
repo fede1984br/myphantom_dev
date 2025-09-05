@@ -11,6 +11,7 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "test": "jest"
+
   },
   "dependencies": {
     "@google-cloud/secret-manager": "^5.5.0",
@@ -30,6 +31,7 @@
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.2",
     "typescript": "^5.1.6"
+
   },
   "private": true
 }

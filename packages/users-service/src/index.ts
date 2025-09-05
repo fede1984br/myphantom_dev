@@ -36,4 +36,5 @@ app.get("/:id", (req, res) => {
 
 // Expose the Express app as a Cloud Function named "api"
 // This groups all the app's routes under a single function.
+
 export const api = functions.https.onRequest(app);
