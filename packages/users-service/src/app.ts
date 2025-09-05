@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+
 import * as admin from "firebase-admin";
 import { User } from "@my-phantom/core/models";
 
@@ -17,6 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/:id", (req: Request, res: Response) => {
+
     const userId = req.params.id;
     const mockUser: User = {
         id: userId,

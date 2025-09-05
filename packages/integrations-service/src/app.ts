@@ -1,9 +1,11 @@
 import express, { Request, Response } from "express";
+
 import * as admin from "firebase-admin";
 import { google } from "googleapis";
 import * as jwt from "jsonwebtoken";
 import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
 import { ChatMessage } from "@my-phantom/core/models";
+
 
 if (admin.apps.length === 0) {
   admin.initializeApp();
@@ -16,6 +18,7 @@ const secretManagerClient = new SecretManagerServiceClient();
 const projectId = process.env.GCLOUD_PROJECT || 'myphantomdev';
 
 // --- Helper Functions ---
+
 
 let serviceAccountKey: any;
 async function getServiceAccountKey() {
@@ -36,6 +39,7 @@ async function getOAuth2Client() {
         name: `projects/${projectId}/secrets/GOOGLE_OAUTH_CLIENT_ID/versions/latest`,
     });
     const clientId = clientIdVersion.payload?.data?.toString();
+
     const [clientSecretVersion] = await secretManagerClient.accessSecretVersion({
         name: `projects/${projectId}/secrets/GOOGLE_OAUTH_CLIENT_SECRET/versions/latest`,
     });
@@ -44,6 +48,7 @@ async function getOAuth2Client() {
         throw new Error("Could not retrieve OAuth credentials from Secret Manager.");
     }
     oauth2ClientInstance = new google.auth.OAuth2(clientId, clientSecret, 'http://localhost:3000/oauth-callback');
+
     return oauth2ClientInstance;
 }
 
@@ -52,6 +57,7 @@ async function getOAuth2Client() {
 app.get("/", (req: Request, res: Response) => res.status(200).json({ message: "Integrations service is up and running." }));
 
 app.post("/generate-gemini-token", async (req: Request, res: Response) => {
+
     try {
         const { sessionId, userId } = req.body;
         if (!sessionId || !userId) {
@@ -71,6 +77,7 @@ app.post("/generate-gemini-token", async (req: Request, res: Response) => {
 });
 
 app.post("/google-oauth-callback", async (req: Request, res: Response) => {
+
     try {
         const { code, userId } = req.body;
         if (!code || !userId) {
@@ -82,6 +89,7 @@ app.post("/google-oauth-callback", async (req: Request, res: Response) => {
             const userRef = admin.firestore().collection('users').doc(userId);
             await userRef.update({ googleRefreshToken: tokens.refresh_token });
         }
+
         res.status(200).json({ message: "Successfully connected Google account." });
     } catch (error) {
         console.error("Error in Google OAuth callback:", error);
@@ -91,6 +99,7 @@ app.post("/google-oauth-callback", async (req: Request, res: Response) => {
 });
 
 app.get("/classroom/courses", async (req: Request, res: Response) => {
+
     try {
         const userId = req.query.userId as string;
         if (!userId) {
@@ -102,6 +111,7 @@ app.get("/classroom/courses", async (req: Request, res: Response) => {
         }
         const oauthClient = await getOAuth2Client();
         oauthClient.setCredentials({ refresh_token: userDoc.data()?.googleRefreshToken });
+
         const classroom = google.classroom({ version: 'v1', auth: oauthClient });
         const courseList = await classroom.courses.list();
         res.status(200).json(courseList.data.courses || []);
