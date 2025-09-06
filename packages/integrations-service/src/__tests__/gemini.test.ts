@@ -7,14 +7,14 @@ jest.mock('@google-cloud/secret-manager', () => {
   return {
     SecretManagerServiceClient: jest.fn().mockImplementation(() => {
       return {
-        accessSecretVersion: jest.fn().mockImplementation((request) => {
+        accessSecretVersion: jest.fn().mockImplementation((request: any) => {
           if (request.name.includes('gemini-live-service-account-key')) {
             return Promise.resolve([
               {
                 payload: {
                   data: JSON.stringify({
                     client_email: 'fake-gemini-minter@gserviceaccount.com',
-                    private_key: '-----BEGIN PRIVATE KEY-----\nFAKE_GEMINI_PRIVATE_KEY\n-----END PRIVATE KEY-----\n',
+                    jwt_secret: 'a-super-secret-key-for-hs256',
                   }),
                 },
               },
@@ -53,15 +53,22 @@ describe('POST /generate-gemini-token', () => {
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty('token');
 
-    // We can't verify the signature since we used a fake private key,
-    // but we can decode the payload and check its contents.
-    const payload = jwt.decode(res.body.token) as jwt.JwtPayload;
+    // We can now verify the signature since we are using HS256 with a known secret.
+    const payload = jwt.verify(res.body.token, 'a-super-secret-key-for-hs256') as jwt.JwtPayload;
 
     expect(payload).toBeDefined();
+    if (!payload) return; // Type guard for TypeScript
+
     expect(payload.iss).toBe('fake-gemini-minter@gserviceaccount.com');
     expect(payload.aud).toBe('https://generativelanguage.googleapis.com/');
     expect(payload.session_id).toBe('test-session-123');
     expect(payload.user_id).toBe('test-user-456');
-    expect(payload.exp).toBeGreaterThan(payload.iat);
+
+    expect(payload.exp).toBeDefined();
+    expect(payload.iat).toBeDefined();
+
+    if (payload.exp && payload.iat) {
+      expect(payload.exp).toBeGreaterThan(payload.iat);
+    }
   });
 });
