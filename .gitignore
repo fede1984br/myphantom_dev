@@ -3,7 +3,7 @@ node_modules
 
 # Build artifacts
 /build
-/dist
+dist/
 .DS_Store
 
 # Local environment variables
