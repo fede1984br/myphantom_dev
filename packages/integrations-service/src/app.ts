@@ -4,9 +4,6 @@ import * as admin from "firebase-admin";
 import { google } from "googleapis";
 import * as jwt from "jsonwebtoken";
 import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
-import { ChatMessage } from "@my-phantom/core/models";
-
-
 if (admin.apps.length === 0) {
   admin.initializeApp();
 }
@@ -67,12 +64,12 @@ app.post("/generate-gemini-token", async (req: Request, res: Response) => {
         const now = Math.floor(Date.now() / 1000);
         const expiry = now + 3600;
         const claims = { iss: key.client_email, sub: key.client_email, aud: "https://generativelanguage.googleapis.com/", iat: now, exp: expiry, session_id: sessionId, user_id: userId };
-        const token = jwt.sign(claims, key.private_key, { algorithm: 'RS256' });
-        res.status(200).json({ token });
+        const token = jwt.sign(claims, key.jwt_secret, { algorithm: 'HS256' });
+        return res.status(200).json({ token });
     } catch (error) {
         console.error("Error generating Gemini Live token:", error);
         const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-        res.status(500).json({ error: "Failed to generate token.", details: errorMessage });
+        return res.status(500).json({ error: "Failed to generate token.", details: errorMessage });
     }
 });
 
@@ -90,11 +87,11 @@ app.post("/google-oauth-callback", async (req: Request, res: Response) => {
             await userRef.update({ googleRefreshToken: tokens.refresh_token });
         }
 
-        res.status(200).json({ message: "Successfully connected Google account." });
+        return res.status(200).json({ message: "Successfully connected Google account." });
     } catch (error) {
         console.error("Error in Google OAuth callback:", error);
         const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-        res.status(500).json({ error: "Failed to process OAuth callback.", details: errorMessage });
+        return res.status(500).json({ error: "Failed to process OAuth callback.", details: errorMessage });
     }
 });
 
@@ -106,19 +103,23 @@ app.get("/classroom/courses", async (req: Request, res: Response) => {
             return res.status(400).json({ error: "userId query parameter is required." });
         }
         const userDoc = await admin.firestore().collection('users').doc(userId).get();
-        if (!userDoc.exists || !userDoc.data()?.googleRefreshToken) {
-            return res.status(403).json({ error: "User has not connected their Google account or does not exist." });
+        if (!userDoc.exists) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const userData = userDoc.data();
+        if (!userData?.googleRefreshToken) {
+            return res.status(403).json({ error: "User has not connected their Google account" });
         }
         const oauthClient = await getOAuth2Client();
-        oauthClient.setCredentials({ refresh_token: userDoc.data()?.googleRefreshToken });
+        oauthClient.setCredentials({ refresh_token: userData.googleRefreshToken });
 
         const classroom = google.classroom({ version: 'v1', auth: oauthClient });
         const courseList = await classroom.courses.list();
-        res.status(200).json(courseList.data.courses || []);
+        return res.status(200).json(courseList.data.courses || []);
     } catch (error) {
         console.error("Error listing Google Classroom courses:", error);
         const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-        res.status(500).json({ error: "Failed to list courses.", details: errorMessage });
+        return res.status(500).json({ error: "Failed to list courses.", details: errorMessage });
     }
 });
 

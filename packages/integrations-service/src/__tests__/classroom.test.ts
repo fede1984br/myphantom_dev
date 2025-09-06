@@ -29,6 +29,7 @@ jest.mock('googleapis', () => ({
 
 // Mock the 'firebase-admin' module
 jest.mock('firebase-admin', () => ({
+  apps: [],
   initializeApp: jest.fn(),
   firestore: jest.fn(() => ({
     collection: jest.fn((collectionName: string) => {
