@@ -1,5 +1,5 @@
 {
-  "name": "integrations-service",
+  "name": "api-service",
   "version": "1.0.0",
   "description": "Handles third-party integrations",
   "main": "dist/index.js",

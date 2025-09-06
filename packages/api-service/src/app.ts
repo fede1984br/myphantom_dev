@@ -1,21 +1,47 @@
 import express, { Request, Response } from "express";
-
 import * as admin from "firebase-admin";
 import { google } from "googleapis";
 import * as jwt from "jsonwebtoken";
 import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
+import { User } from "@my-phantom/core/models";
+
 if (admin.apps.length === 0) {
   admin.initializeApp();
 }
 
-const app = express();
-app.use(express.json());
+const usersApp = express();
+usersApp.use(express.json());
+
+const integrationsApp = express();
+integrationsApp.use(express.json());
+
+// --- Users Service ---
+const usersRouter = express.Router();
+
+usersRouter.get("/", (req: Request, res: Response) => {
+  res.status(200).json({ message: "Users service is up and running." });
+});
+
+usersRouter.get("/:id", (req: Request, res: Response) => {
+  const userId = req.params.id;
+  const mockUser: User = {
+    id: userId,
+    email: `user.${userId}@example.com`,
+    displayName: `User ${userId}`,
+    createdAt: admin.firestore.Timestamp.now(),
+  };
+  res.status(200).json(mockUser);
+});
+
+usersApp.use('/', usersRouter);
+
+// --- Integrations Service ---
+const integrationsRouter = express.Router();
 
 const secretManagerClient = new SecretManagerServiceClient();
 const projectId = process.env.GCLOUD_PROJECT || 'myphantomdev';
 
 // --- Helper Functions ---
-
 
 let serviceAccountKey: any;
 async function getServiceAccountKey() {
@@ -51,9 +77,9 @@ async function getOAuth2Client() {
 
 // --- API Endpoints ---
 
-app.get("/", (req: Request, res: Response) => res.status(200).json({ message: "Integrations service is up and running." }));
+integrationsRouter.get("/", (req: Request, res: Response) => res.status(200).json({ message: "Integrations service is up and running." }));
 
-app.post("/generate-gemini-token", async (req: Request, res: Response) => {
+integrationsRouter.post("/generate-gemini-token", async (req: Request, res: Response) => {
 
     try {
         const { sessionId, userId } = req.body;
@@ -73,7 +99,7 @@ app.post("/generate-gemini-token", async (req: Request, res: Response) => {
     }
 });
 
-app.post("/google-oauth-callback", async (req: Request, res: Response) => {
+integrationsRouter.post("/google-oauth-callback", async (req: Request, res: Response) => {
 
     try {
         const { code, userId } = req.body;
@@ -95,7 +121,7 @@ app.post("/google-oauth-callback", async (req: Request, res: Response) => {
     }
 });
 
-app.get("/classroom/courses", async (req: Request, res: Response) => {
+integrationsRouter.get("/classroom/courses", async (req: Request, res: Response) => {
 
     try {
         const userId = req.query.userId as string;
@@ -123,4 +149,6 @@ app.get("/classroom/courses", async (req: Request, res: Response) => {
     }
 });
 
-export { app };
+integrationsApp.use('/', integrationsRouter);
+
+export { usersApp, integrationsApp };

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../app'; // Import the decoupled express app
+import { integrationsApp as app } from '../app'; // Import the decoupled express app
 import * as jwt from 'jsonwebtoken';
 
 // Mock the SecretManagerServiceClient at the module level
