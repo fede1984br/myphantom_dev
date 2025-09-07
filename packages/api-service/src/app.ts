@@ -46,27 +46,44 @@ const projectId = process.env.GCLOUD_PROJECT || 'myphantomdev';
 let serviceAccountKey: any;
 async function getServiceAccountKey() {
     if (serviceAccountKey) return serviceAccountKey;
-    const [version] = await secretManagerClient.accessSecretVersion({
-        name: `projects/${projectId}/secrets/gemini-live-service-account-key/versions/latest`,
-    });
-    const payload = version.payload?.data?.toString();
-    if (!payload) throw new Error("Could not retrieve service account key.");
-    serviceAccountKey = JSON.parse(payload);
-    return serviceAccountKey;
+    try {
+        const [version] = await secretManagerClient.accessSecretVersion({
+            name: `projects/${projectId}/secrets/gemini-live-service-account-key/versions/latest`,
+        });
+        const payload = version.payload?.data?.toString();
+        if (!payload) throw new Error("Could not retrieve service account key.");
+        serviceAccountKey = JSON.parse(payload);
+        return serviceAccountKey;
+    } catch (error) {
+        console.error("Failed to access secret: gemini-live-service-account-key", error);
+        throw new Error("Failed to access secret: gemini-live-service-account-key. Check logs for details.");
+    }
 }
 
 let oauth2ClientInstance: any;
 async function getOAuth2Client() {
     if (oauth2ClientInstance) return oauth2ClientInstance;
-    const [clientIdVersion] = await secretManagerClient.accessSecretVersion({
-        name: `projects/${projectId}/secrets/GOOGLE_OAUTH_CLIENT_ID/versions/latest`,
-    });
-    const clientId = clientIdVersion.payload?.data?.toString();
+    let clientId, clientSecret;
+    try {
+        const [clientIdVersion] = await secretManagerClient.accessSecretVersion({
+            name: `projects/${projectId}/secrets/GOOGLE_OAUTH_CLIENT_ID/versions/latest`,
+        });
+        clientId = clientIdVersion.payload?.data?.toString();
+    } catch (error) {
+        console.error("Failed to access secret: GOOGLE_OAUTH_CLIENT_ID", error);
+        throw new Error("Failed to access secret: GOOGLE_OAUTH_CLIENT_ID. Check logs for details.");
+    }
 
-    const [clientSecretVersion] = await secretManagerClient.accessSecretVersion({
-        name: `projects/${projectId}/secrets/GOOGLE_OAUTH_CLIENT_SECRET/versions/latest`,
-    });
-    const clientSecret = clientSecretVersion.payload?.data?.toString();
+    try {
+        const [clientSecretVersion] = await secretManagerClient.accessSecretVersion({
+            name: `projects/${projectId}/secrets/GOOGLE_OAUTH_CLIENT_SECRET/versions/latest`,
+        });
+        clientSecret = clientSecretVersion.payload?.data?.toString();
+    } catch (error) {
+        console.error("Failed to access secret: GOOGLE_OAUTH_CLIENT_SECRET", error);
+        throw new Error("Failed to access secret: GOOGLE_OAUTH_CLIENT_SECRET. Check logs for details.");
+    }
+
     if (!clientId || !clientSecret) {
         throw new Error("Could not retrieve OAuth credentials from Secret Manager.");
     }
