@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../app';
+import { integrationsApp as app } from '../app';
 
 // --- Mocks ---
 

@@ -1,34 +1,17 @@
 {
-  "functions": [
-    {
-      "source": "packages/users-service",
-      "codebase": "users-service",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" install",
-        "npm --prefix \"$RESOURCE_DIR\" run build"
-      ],
-      "runtime": "nodejs20"
-    },
-    {
-      "source": "packages/integrations-service",
-      "codebase": "integrations-service",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" install",
-        "npm --prefix \"$RESOURCE_DIR\" run build"
-      ],
-      "runtime": "nodejs20"
-    }
-  ]
+  "functions": {
+    "source": "packages/api-service",
+    "codebase": "api-service",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log"
+    ],
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" install",
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ],
+    "runtime": "nodejs20"
+  }
 }
