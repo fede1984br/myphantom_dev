@@ -4,6 +4,7 @@
   "description": "Handles third-party integrations",
   "main": "dist/index.js",
   "scripts": {
+    "prebuild": "npm install --prefix ../core",
     "build": "tsc",
     "test": "node --max-old-space-size=4096 node_modules/.bin/jest --runInBand"
   },
