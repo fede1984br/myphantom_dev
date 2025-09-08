@@ -1,7 +1,7 @@
-import * as functions from "firebase-functions";
+import { onRequest } from "firebase-functions/v2/https";
 import { usersApp, integrationsApp } from "./app";
 
 // Expose the Express apps as a Cloud Functions
 
-export const users = functions.https.onRequest(usersApp);
-export const integrations = functions.https.onRequest(integrationsApp);
+export const users = onRequest(usersApp);
+export const integrations = onRequest(integrationsApp);
