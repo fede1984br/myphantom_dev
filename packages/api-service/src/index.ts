@@ -5,5 +5,6 @@ import { usersApp, integrationsApp } from "./app";
 
 const serviceAccount = "myphantomdev@appspot.gserviceaccount.com";
 
-export const users = onRequest(usersApp);
-export const integrations = onRequest(integrationsApp);
+export const users = onRequest({ serviceAccount }, usersApp);
+export const integrations = onRequest({ serviceAccount }, integrationsApp);
+
