@@ -17,7 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import PhantomGreeting from "../components/student/PhantomGreeting";
+import PhantomGreeting from "../Components/student/PhantomGreeting";
 import QuickQuests from "../components/student/QuickQuests";
 import PhantomChat from "../components/student/PhantomChat";
 import StudentStats from "../components/student/StudentStats";
