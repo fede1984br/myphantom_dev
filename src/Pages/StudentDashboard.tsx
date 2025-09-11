@@ -18,11 +18,12 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
 import PhantomGreeting from "../Components/student/PhantomGreeting";
-import QuickQuests from "../components/student/QuickQuests";
-import PhantomChat from "../components/student/PhantomChat";
-import StudentStats from "../components/student/StudentStats";
-import TodaysAssignments from "../components/student/TodaysAssignments";
-import PhantomTips from "../components/student/PhantomTips";
+import QuickQuests from "../Components/student/QuickQuests";
+import PhantomChat from "../Components/student/PhantomChat";
+import StudentStats from "../Components/student/StudentStats";
+import TodaysAssignments from "../Components/student/TodaysAssignments";
+import PhantomTips from "../Components/student/PhantomTips";
+
 
 export default function StudentDashboard() {
   const [quests, setQuests] = useState([]);

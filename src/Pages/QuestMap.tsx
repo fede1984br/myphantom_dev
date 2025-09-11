@@ -7,8 +7,8 @@ import { ArrowLeft, Map, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import MissionBoard from "../components/student/MissionBoard";
-import QuestFilters from "../components/student/QuestFilters";
+import MissionBoard from "../Components/student/MissionBoard";
+import QuestFilters from "../Components/student/QuestFilters";
 
 export default function QuestMap() {
   const navigate = useNavigate();
