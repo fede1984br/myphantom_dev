@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Progress } from "@/Components/ui/progress";
+import { Badge } from "@/Components/ui/badge";
+import { Skeleton } from "@/Components/ui/skeleton";
 import { BookOpen, Clock, Target } from "lucide-react";
 
 const subjectColors = {
