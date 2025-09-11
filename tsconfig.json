@@ -21,7 +21,8 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "@/entities/all": ["../packages/core/models"]
     }
   },
   "include": [
