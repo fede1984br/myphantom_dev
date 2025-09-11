@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Quest, StudentProgress } from "@/entities/all";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Progress } from "@/Components/ui/progress";
+import { Badge } from "@/Components/ui/badge";
 import { 
   ArrowLeft, 
   Play, 
@@ -18,9 +18,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import QuestActivity from "../components/student/QuestActivity";
-import QuizComponent from "../components/student/QuizComponent";
-import MotivationalMessages from "../components/student/MotivationalMessages";
+import QuestActivity from "../Components/student/QuestActivity";
+import QuizComponent from "../Components/student/QuizComponent";
+import MotivationalMessages from "../Components/student/MotivationalMessages";
 
 export default function QuestDetail() {
   const navigate = useNavigate();

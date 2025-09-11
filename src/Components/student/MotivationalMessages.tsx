@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Heart, Star, ThumbsUp, Smile, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 

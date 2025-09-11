@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Student, WeeklySummary } from "@/entities/all";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Badge } from "@/Components/ui/badge";
 import { CalendarIcon, TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { format, addWeeks, subWeeks, startOfWeek, endOfWeek } from "date-fns";
 
-import WeeklySummaryCard from "../components/summaries/WeeklySummaryCard";
-import SubjectBreakdown from "../components/summaries/SubjectBreakdown";
-import ProgressTimeline from "../components/summaries/ProgressTimeline";
+import WeeklySummaryCard from "../Components/summaries/WeeklySummaryCard";
+import SubjectBreakdown from "../Components/summaries/SubjectBreakdown";
+import ProgressTimeline from "../Components/summaries/ProgressTimeline";
 
 export default function WeeklySummaries() {
   const [students, setStudents] = useState([]);

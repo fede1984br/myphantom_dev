@@ -16,7 +16,7 @@ import {
   SidebarFooter,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@/Components/ui/sidebar";
 
 const navigationItems = [
   {

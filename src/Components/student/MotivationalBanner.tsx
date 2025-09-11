@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import { Sparkles, Heart, ThumbsUp, Smile } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 

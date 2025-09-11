@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Quest, StudentProgress } from "@/entities/all";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Badge } from "@/Components/ui/badge";
 import { ArrowLeft, Map, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import MissionBoard from "../components/student/MissionBoard";
-import QuestFilters from "../components/student/QuestFilters";
+import MissionBoard from "../Components/student/MissionBoard";
+import QuestFilters from "../Components/student/QuestFilters";
 
 export default function QuestMap() {
   const navigate = useNavigate();
