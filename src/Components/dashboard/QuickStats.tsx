@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Skeleton } from "@/Components/ui/skeleton";
 import { TrendingUp, Clock, Trophy, BookOpen } from "lucide-react";
 
 const StatCard = ({ title, value, icon: Icon, bgColor, textColor, change }) => (

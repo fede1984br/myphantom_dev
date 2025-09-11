@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Quest, StudentProgress, DailyStreak, StudentAchievement } from "@/entities/all";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Badge } from "@/Components/ui/badge";
 import { 
   Bot, 
   MessageSquare, 
@@ -17,12 +17,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import PhantomGreeting from "../components/student/PhantomGreeting";
-import QuickQuests from "../components/student/QuickQuests";
-import PhantomChat from "../components/student/PhantomChat";
-import StudentStats from "../components/student/StudentStats";
-import TodaysAssignments from "../components/student/TodaysAssignments";
-import PhantomTips from "../components/student/PhantomTips";
+import PhantomGreeting from "../Components/student/PhantomGreeting";
+import QuickQuests from "../Components/student/QuickQuests";
+import PhantomChat from "../Components/student/PhantomChat";
+import StudentStats from "../Components/student/StudentStats";
+import TodaysAssignments from "../Components/student/TodaysAssignments";
+import PhantomTips from "../Components/student/PhantomTips";
 
 export default function StudentDashboard() {
   const [quests, setQuests] = useState([]);

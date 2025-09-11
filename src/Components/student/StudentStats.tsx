@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/Components/ui/card";
+import { Progress } from "@/Components/ui/progress";
+import { Skeleton } from "@/Components/ui/skeleton";
 import { 
   Flame, 
   Star, 

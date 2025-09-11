@@ -19,14 +19,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
     }
   },
   "include": [
-    "Components",
-    "Pages",
-    "Layout.js"
+    "src"
   ]
 }

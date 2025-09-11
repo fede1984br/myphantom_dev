@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Badge } from "@/Components/ui/badge";
+import { Progress } from "@/Components/ui/progress";
+import { Skeleton } from "@/Components/ui/skeleton";
 import { CalendarIcon, TrendingUp, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 

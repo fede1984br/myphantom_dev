@@ -1,6 +1,6 @@
 import React from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
+import { Badge } from "@/Components/ui/badge";
 
 export default function QuestFilters({ filters, setFilters }) {
   const subjects = [

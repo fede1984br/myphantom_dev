@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/Components/ui/card";
+import { Badge } from "@/Components/ui/badge";
+import { Skeleton } from "@/Components/ui/skeleton";
 import { User, GraduationCap, Heart } from "lucide-react";
 
 export default function ProfileHeader({ student, isLoading }) {
