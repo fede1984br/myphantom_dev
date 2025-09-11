@@ -18,9 +18,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import QuestActivity from "../components/student/QuestActivity";
-import QuizComponent from "../components/student/QuizComponent";
-import MotivationalMessages from "../components/student/MotivationalMessages";
+import QuestActivity from "../Components/student/QuestActivity";
+import QuizComponent from "../Components/student/QuizComponent";
+import MotivationalMessages from "../Components/student/MotivationalMessages";
 
 export default function QuestDetail() {
   const navigate = useNavigate();

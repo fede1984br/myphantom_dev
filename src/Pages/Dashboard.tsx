@@ -6,10 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { TrendingUp, Clock, Trophy, Target, BookOpen, Star } from "lucide-react";
 import { format, startOfWeek, endOfWeek } from "date-fns";
 
-import QuickStats from "../components/dashboard/QuickStats";
-import CurrentWeekProgress from "../components/dashboard/CurrentWeekProgress";
-import RecentAchievements from "../components/dashboard/RecentAchievements";
-import ActionableInsights from "../components/dashboard/ActionableInsights";
+import QuickStats from "../Components/dashboard/QuickStats";
+import CurrentWeekProgress from "../Components/dashboard/CurrentWeekProgress";
+import RecentAchievements from "../Components/dashboard/RecentAchievements";
+import ActionableInsights from "../Components/dashboard/ActionableInsights";
 
 export default function Dashboard() {
   const [students, setStudents] = useState([]);

@@ -5,9 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { User, GraduationCap, Heart, Target, Edit3 } from "lucide-react";
 
-import ProfileHeader from "../components/profile/ProfileHeader";
-import LearningProfile from "../components/profile/LearningProfile";
-import ProgressOverview from "../components/profile/ProgressOverview";
+import ProfileHeader from "../Components/profile/ProfileHeader";
+import LearningProfile from "../Components/profile/LearningProfile";
+import ProgressOverview from "../Components/profile/ProgressOverview";
 
 export default function StudentProfile() {
   const [student, setStudent] = useState(null);
