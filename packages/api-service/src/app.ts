@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, Application } from "express";
 import * as admin from "firebase-admin";
 import { google } from "googleapis";
 import * as jwt from "jsonwebtoken";
@@ -9,10 +9,10 @@ if (admin.apps.length === 0) {
   admin.initializeApp();
 }
 
-const usersApp = express();
+const usersApp: Application = express();
 usersApp.use(express.json());
 
-const integrationsApp = express();
+const integrationsApp: Application = express();
 integrationsApp.use(express.json());
 
 // --- Users Service ---

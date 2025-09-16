@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+  "@my-phantom/core": "1.0.0",
     "date-fns": "^2.29.3",
     "lucide-react": "^0.363.0",
     "react": "^18.2.0",
@@ -37,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
