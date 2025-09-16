@@ -1,1 +1,1 @@
-export * from '../../packages/core/models';
+export * from '@my-phantom/core';
