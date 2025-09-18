@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from "@/Components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Bot, RefreshCw, MessageSquare, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";

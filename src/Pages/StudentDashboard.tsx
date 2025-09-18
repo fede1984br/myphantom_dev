@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Quest, StudentProgress, DailyStreak, StudentAchievement } from "@/entities/all";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Badge } from "@/Components/ui/badge";
 import { 

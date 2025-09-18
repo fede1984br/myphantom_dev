@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Student } from "@/entities/all";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import { User, GraduationCap, Heart, Target, Edit3 } from "lucide-react";

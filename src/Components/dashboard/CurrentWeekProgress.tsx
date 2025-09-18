@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/Components/ui/progress";
 import { Skeleton } from "@/Components/ui/skeleton";
 import { BookOpen, Clock } from "lucide-react";

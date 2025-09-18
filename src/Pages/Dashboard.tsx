@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Student, WeeklySummary } from "@/entities/all";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/Components/ui/badge";
 import { Progress } from "@/Components/ui/progress";
 import { TrendingUp, Clock, Trophy, Target, BookOpen, Star } from "lucide-react";
