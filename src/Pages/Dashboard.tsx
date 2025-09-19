@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Student, WeeklySummary } from "@/entities/all";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/Components/ui/badge";
-import { Progress } from "@/Components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { TrendingUp, Clock, Trophy, Target, BookOpen, Star } from "lucide-react";
 import { format, startOfWeek, endOfWeek } from "date-fns";
 

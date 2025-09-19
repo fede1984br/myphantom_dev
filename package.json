@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@my-phantom/core": "1.0.0",
+    "@radix-ui/react-progress": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
     "date-fns": "^2.29.3",
     "lucide-react": "^0.363.0",
     "react": "^18.2.0",
