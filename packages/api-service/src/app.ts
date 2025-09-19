@@ -3,7 +3,7 @@ import * as admin from "firebase-admin";
 import { google } from "googleapis";
 import * as jwt from "jsonwebtoken";
 import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
-import { User } from "@my-phantom/core/models";
+import { Student } from "@my-phantom/core";
 
 if (admin.apps.length === 0) {
   admin.initializeApp();
@@ -24,11 +24,12 @@ usersRouter.get("/", (req: Request, res: Response) => {
 
 usersRouter.get("/:id", (req: Request, res: Response) => {
   const userId = req.params.id;
-  const mockUser: User = {
+  const mockUser: Student = {
     id: userId,
     email: `user.${userId}@example.com`,
-    displayName: `User ${userId}`,
-    createdAt: admin.firestore.Timestamp.now(),
+    name: `User ${userId}`,
+    activeQuests: [],
+    completedQuests: [],
   };
   res.status(200).json(mockUser);
 });
