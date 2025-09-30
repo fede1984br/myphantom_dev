@@ -1,8 +1,14 @@
+import { DailyStreak } from '@/lib/types';
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Heart, ThumbsUp, Smile } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+interface MotivationalBannerProps {
+  streak: DailyStreak;
+}
+
 
 const motivationalMessages = [
   {
@@ -27,7 +33,7 @@ const motivationalMessages = [
   }
 ];
 
-export default function MotivationalBanner({ streak }) {
+export default function MotivationalBanner({ streak }: MotivationalBannerProps) {
   const [currentMessage, setCurrentMessage] = useState(0);
   const [showBanner, setShowBanner] = useState(true);
 

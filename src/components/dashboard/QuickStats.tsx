@@ -1,9 +1,19 @@
+import { Student, Subject, Summary } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TrendingUp, Clock, Trophy, BookOpen } from "lucide-react";
 
-const StatCard = ({ title, value, icon: Icon, bgColor, textColor, change }) => (
+interface StatCardProps {
+  title: string;
+  value: string | number;
+  icon: React.ElementType;
+  bgColor: string;
+  textColor: string;
+  change: string;
+}
+
+const StatCard = ({ title, value, icon: Icon, bgColor, textColor, change }: StatCardProps) => (
   <Card className={`${bgColor} border-0 shadow-lg hover:shadow-xl transition-all duration-300`}>
     <CardContent className="p-6">
       <div className="flex items-center justify-between">
@@ -25,7 +35,13 @@ const StatCard = ({ title, value, icon: Icon, bgColor, textColor, change }) => (
   </Card>
 );
 
-export default function QuickStats({ student, summary, isLoading }) {
+interface QuickStatsProps {
+  student: Student;
+  summary: Summary;
+  isLoading: boolean;
+}
+
+export default function QuickStats({ student, summary, isLoading }: QuickStatsProps) {
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -42,13 +58,13 @@ export default function QuickStats({ student, summary, isLoading }) {
     );
   }
 
-  const totalActivities = summary?.subjects?.reduce((total, subject) => 
+const totalActivities = summary?.subjects?.reduce((total: number, subject: Subject) => 
     total + (subject.activities_completed || 0), 0) || 0;
 
-  const totalTime = summary?.subjects?.reduce((total, subject) => 
+  const totalTime = summary?.subjects?.reduce((total: number, subject: Subject) => 
     total + (subject.time_spent_minutes || 0), 0) || 0;
 
-  const achievements = summary?.subjects?.reduce((total, subject) => 
+  const achievements = summary?.subjects?.reduce((total: number, subject: Subject) => 
     total + (subject.key_achievements?.length || 0), 0) || 0;
 
   return (

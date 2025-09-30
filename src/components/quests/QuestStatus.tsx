@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { Quest } from '@my-phantom/core'; 
 import { invokeLLM } from '@/integrations/Core';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+
+interface Quest {
+  title?: string;
+  status?: string;
+  description?: string;
+}
 
 interface QuestStatusProps {
   quest: Quest;

@@ -1,10 +1,16 @@
+import { Student } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BarChart3, Calendar, Clock } from "lucide-react";
 
-export default function ProgressOverview({ student, isLoading }) {
+interface ProgressOverviewProps {
+  student: Student;
+  isLoading: boolean;
+}
+
+export default function ProgressOverview({ student, isLoading }: ProgressOverviewProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0">

@@ -1,5 +1,6 @@
+import { StudentAchievement } from '@/lib/types';
+import { api } from '@/lib/api';
 import React, { useState, useEffect } from "react";
-import { StudentAchievement } from "@/entities/all";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -38,9 +39,8 @@ const rarityConfig = {
 
 export default function Achievements() {
   const navigate = useNavigate();
-  const [achievements, setAchievements] = useState([]);
+  const [achievements, setAchievements] = useState<StudentAchievement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const studentId = "student_001";
 
   useEffect(() => {
@@ -49,13 +49,13 @@ export default function Achievements() {
 
   const loadAchievements = async () => {
     setIsLoading(true);
-    const achievementsData = await StudentAchievement.filter({ student_id: studentId }, '-earned_at');
+    const achievementsData = await api.achievements.getAll({ student_id: studentId });
     setAchievements(achievementsData);
     setIsLoading(false);
   };
 
   const getAchievementsByType = () => {
-    const types = {
+    const types: Record<string, StudentAchievement[]> = {
       quest_master: [],
       streak_keeper: [],
       speed_learner: [],

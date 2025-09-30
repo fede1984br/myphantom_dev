@@ -1,3 +1,4 @@
+import { DailyStreak, StudentAchievement } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -13,7 +14,13 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function StudentStats({ streak, achievements, isLoading }) {
+interface StudentStatsProps {
+  streak: DailyStreak;
+  achievements: StudentAchievement[];
+  isLoading: boolean;
+}
+
+export default function StudentStats({ streak, achievements, isLoading }: StudentStatsProps) {
   if (isLoading) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

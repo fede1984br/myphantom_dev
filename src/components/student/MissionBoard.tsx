@@ -1,3 +1,4 @@
+import { Quest, PlayerProgress } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,19 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
+interface QuestCardProps {
+  quest: Quest;
+  progress: PlayerProgress | undefined;
+  onStart: (quest: Quest) => void;
+}
+
+interface MissionBoardProps {
+  quests: Quest[];
+  playerProgress: PlayerProgress[];
+  onQuestComplete: (questId: string) => void;
+  isLoading: boolean;
+}
+
 const subjectIcons = {
   mathematics: Calculator,
   english: BookOpen,
@@ -33,7 +47,7 @@ const difficultyColors = {
   boss: 'from-red-500 to-pink-600'
 };
 
-const QuestCard = ({ quest, progress, onStart }) => {
+const QuestCard = ({ quest, progress, onStart }: QuestCardProps) => {
   const SubjectIcon = subjectIcons[quest.subject] || BookOpen;
   const isLocked = progress?.status === 'locked' || !progress;
   const isCompleted = progress?.status === 'completed';
@@ -52,7 +66,7 @@ const QuestCard = ({ quest, progress, onStart }) => {
             ? 'border-green-400 bg-gradient-to-br from-green-50 to-emerald-50 shadow-lg'
             : 'border-purple-300 bg-white hover:shadow-xl'
       }`}>
-        {quest.is_boss_quest && (
+        {quest.is_boss && (
           <div className="absolute top-2 right-2">
             <Crown className="w-6 h-6 text-yellow-500" />
           </div>
@@ -96,7 +110,7 @@ const QuestCard = ({ quest, progress, onStart }) => {
           
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-500">
-              ⏱️ {quest.estimated_time}min
+              ⏱️ {quest.estimated_time_min}min
               {quest.rewards?.xp_points && (
                 <span className="ml-2">⭐ {quest.rewards.xp_points}XP</span>
               )}
@@ -139,7 +153,7 @@ const QuestCard = ({ quest, progress, onStart }) => {
   );
 };
 
-export default function MissionBoard({ quests, playerProgress, onQuestComplete, isLoading }) {
+export default function MissionBoard({ quests, playerProgress, onQuestComplete, isLoading }: MissionBoardProps) {
   if (isLoading) {
     return (
       <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-0">
@@ -159,16 +173,16 @@ export default function MissionBoard({ quests, playerProgress, onQuestComplete, 
     );
   }
 
-  const handleQuestStart = (quest) => {
+  const handleQuestStart = (quest: Quest) => {
     // In a real app, this would navigate to the quest detail page
     console.log('Starting quest:', quest.title);
     // For demo purposes, trigger completion animation
     if (Math.random() > 0.5) {
-      onQuestComplete();
+      onQuestComplete(quest.id); 
     }
   };
 
-  const getQuestProgress = (questId) => {
+  const getQuestProgress = (questId: string): PlayerProgress | undefined => {
     return playerProgress.find(p => p.quest_id === questId);
   };
 

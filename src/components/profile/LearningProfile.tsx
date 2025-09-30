@@ -1,11 +1,28 @@
-
+import { Student as BaseStudent } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Brain, TrendingUp, AlertCircle, Heart } from "lucide-react";
 
-export default function LearningProfile({ student, isLoading }) {
+interface LearningProfileData {
+  learning_style?: string;
+  strengths?: string[];
+  areasForGrowth?: string[];
+  // any other properties for learning_profile
+}
+
+interface LearningProfileProps {
+  // Extend the base Student type to include properties used in this component
+  student: BaseStudent & {
+    learning_profile?: LearningProfileData;
+    sen_status?: boolean;
+    sen_details?: string;
+  };
+  isLoading: boolean;
+}
+
+export default function LearningProfile({ student, isLoading }: LearningProfileProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0">
@@ -34,10 +51,14 @@ export default function LearningProfile({ student, isLoading }) {
     );
   }
 
-  const learningProfile = student?.learning_profile || {};
-  const strengths = learningProfile.strengths || [];
-  const areasForGrowth = learningProfile.areas_for_growth || [];
-
+const learningProfile: LearningProfileData = student?.learning_profile || {
+  learning_style: 'Mixed',
+  strengths: [],
+  areasForGrowth: []
+};  
+const strengths: string[] = learningProfile.strengths || [];
+const areasForGrowth: string[] = learningProfile.areasForGrowth || [];
+  
   return (
     <Card className="shadow-lg border-0 bg-white">
       <CardHeader className="border-b border-neutral-100 bg-gradient-to-r from-purple-50 to-indigo-50">
@@ -52,7 +73,9 @@ export default function LearningProfile({ student, isLoading }) {
           <div>
             <h3 className="font-semibold text-neutral-800 mb-3">Learning Style</h3>
             <Badge className="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-800 border-purple-200 px-3 py-1">
-              {learningProfile.learning_style?.charAt(0).toUpperCase() + learningProfile.learning_style?.slice(1) || 'Mixed'}
+              {learningProfile.learning_style
+                ? learningProfile.learning_style.charAt(0).toUpperCase() + learningProfile.learning_style.slice(1)
+                : 'Mixed'}
             </Badge>
           </div>
 
@@ -66,7 +89,7 @@ export default function LearningProfile({ student, isLoading }) {
               <p className="text-neutral-500 text-sm">No strengths recorded yet.</p>
             ) : (
               <div className="flex flex-wrap gap-2">
-                {strengths.map((strength, index) => (
+                {strengths.map((strength: string, index: number) => (
                   <Badge key={index} className="bg-green-100 text-green-800 border-green-200">
                     {strength}
                   </Badge>
@@ -85,7 +108,7 @@ export default function LearningProfile({ student, isLoading }) {
               <p className="text-neutral-500 text-sm">No growth areas identified yet.</p>
             ) : (
               <div className="flex flex-wrap gap-2">
-                {areasForGrowth.map((area, index) => (
+                {areasForGrowth.map((area: string, index: number) => (
                   <Badge key={index} className="bg-orange-100 text-orange-800 border-orange-200">
                     {area}
                   </Badge>

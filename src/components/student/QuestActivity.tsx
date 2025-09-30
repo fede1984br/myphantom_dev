@@ -1,4 +1,4 @@
-
+import { Activity } from '@/lib/types';
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,15 @@ import { Badge } from "@/components/ui/badge";
 import { Play, Pause, CheckCircle, Volume2 } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function QuestActivity({ activity, onComplete, onStart, isActive, setIsActive }) {
+interface QuestActivityProps {
+  activity: Activity;
+  onComplete: () => void;
+  onStart: () => void;
+  isActive: boolean;
+  setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function QuestActivity({ activity, onComplete, onStart, isActive, setIsActive }: QuestActivityProps) {
   const [isCompleted, setIsCompleted] = useState(false);
 
   if (!activity) {
@@ -35,7 +43,7 @@ export default function QuestActivity({ activity, onComplete, onStart, isActive,
     }, 1500);
   };
 
-  const speakText = (text) => {
+  const speakText = (text: string) => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.8;

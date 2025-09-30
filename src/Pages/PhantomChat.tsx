@@ -5,10 +5,10 @@ import { ArrowLeft, Bot, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import PhantomChatComponent from "../Components/student/PhantomChat";
-import AccessibilityPanel from "../Components/student/AccessibilityPanel";
+import PhantomChatComponent from "@/components/student/PhantomChat";
+import AccessibilityPanel from "@/components/student/AccessibilityPanel";
 
-export default function PhantomChat() {
+export default function PhantomChatPage() {
   const navigate = useNavigate();
 
   return (

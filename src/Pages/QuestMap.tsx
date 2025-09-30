@@ -1,5 +1,6 @@
+import { api } from '@/lib/api';
 import React, { useState, useEffect } from "react";
-import { Quest, StudentProgress } from "@/entities/all";
+import { Quest, PlayerProgress } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,13 +8,13 @@ import { ArrowLeft, Map, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import MissionBoard from "../Components/student/MissionBoard";
-import QuestFilters from "../Components/student/QuestFilters";
+import MissionBoard from "../components/student/MissionBoard";
+import QuestFilters from "../components/student/QuestFilters";
 
 export default function QuestMap() {
   const navigate = useNavigate();
-  const [quests, setQuests] = useState([]);
-  const [playerProgress, setPlayerProgress] = useState([]);
+  const [quests, setQuests] = useState<Quest[]>([]);
+  const [playerProgress, setPlayerProgress] = useState<PlayerProgress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     subject: 'all',
@@ -30,8 +31,8 @@ export default function QuestMap() {
   const loadQuestData = async () => {
     setIsLoading(true);
     const [questsData, progressData] = await Promise.all([
-      Quest.list(),
-      StudentProgress.filter({ student_id: studentId })
+      api.quests.list(),
+      api.playerProgress.getForStudent(studentId)
     ]);
 
     setQuests(questsData);

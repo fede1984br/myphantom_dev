@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Student, WeeklySummary } from "@/entities/all";
+import { Student, Summary } from "@/lib/types";
+import { api } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { format, addWeeks, subWeeks, startOfWeek, endOfWeek } from "date-fns";
 
-import WeeklySummaryCard from "../Components/summaries/WeeklySummaryCard";
-import SubjectBreakdown from "../Components/summaries/SubjectBreakdown";
-import ProgressTimeline from "../Components/summaries/ProgressTimeline";
+import WeeklySummaryCard from "../components/summaries/WeeklySummaryCard";
+import SubjectBreakdown from "../components/summaries/SubjectBreakdown";
+import ProgressTimeline from "../components/summaries/ProgressTimeline";
 
 export default function WeeklySummaries() {
-  const [students, setStudents] = useState([]);
-  const [summaries, setSummaries] = useState([]);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [summaries, setSummaries] = useState<Summary[]>([]);
   const [currentWeek, setCurrentWeek] = useState(new Date());
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,13 +23,12 @@ export default function WeeklySummaries() {
 
   const loadData = async () => {
     setIsLoading(true);
-    const studentsData = await Student.list();
+    const studentsData = await api.students.getAll();
     setStudents(studentsData);
 
     if (studentsData.length > 0) {
-      const summariesData = await WeeklySummary.filter({
-        student_id: studentsData[0].id
-      }, '-week_start_date', 12);
+      // Fetch all summaries for the student
+      const summariesData = await api.summaries.getForStudent(studentsData[0].id);
       setSummaries(summariesData);
     }
     setIsLoading(false);
@@ -38,11 +38,11 @@ export default function WeeklySummaries() {
   const currentWeekStart = startOfWeek(currentWeek);
   const currentWeekEnd = endOfWeek(currentWeek);
   
-  const currentWeekSummary = summaries.find(s => 
+  const currentWeekSummary = summaries.find(s =>
     format(new Date(s.week_start_date), 'yyyy-MM-dd') === format(currentWeekStart, 'yyyy-MM-dd')
   );
 
-  const navigateWeek = (direction) => {
+  const navigateWeek = (direction: 'next' | 'prev') => {
     setCurrentWeek(prev => direction === 'next' ? addWeeks(prev, 1) : subWeeks(prev, 1));
   };
 
@@ -91,17 +91,21 @@ export default function WeeklySummaries() {
 
         {/* Main Content */}
         <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <WeeklySummaryCard 
-              summary={currentWeekSummary}
-              student={currentStudent}
-              isLoading={isLoading}
-            />
-            <SubjectBreakdown 
-              summary={currentWeekSummary}
-              isLoading={isLoading}
-            />
-          </div>
+          {isLoading ? (
+            <div className="lg:col-span-2"><p>Loading summary...</p></div>
+          ) : currentWeekSummary && currentStudent ? (
+            <div className="lg:col-span-2 space-y-6">
+              <WeeklySummaryCard 
+                summary={currentWeekSummary}
+                student={currentStudent}
+                isLoading={isLoading}
+              />
+              <SubjectBreakdown 
+                summary={currentWeekSummary}
+                isLoading={isLoading}
+              />
+            </div>
+          ) : <div className="lg:col-span-2"><p>No summary available for this week.</p></div>}
 
           <div className="space-y-6">
             <ProgressTimeline 

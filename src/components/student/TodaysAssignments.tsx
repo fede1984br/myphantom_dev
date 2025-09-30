@@ -1,3 +1,4 @@
+import { AssignmentStatus, Assignment } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,14 +14,18 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
+interface TodaysAssignmentsProps {
+  isLoading: boolean;
+}
+
 // Mock Google Classroom assignments
-const mockAssignments = [
+const mockAssignments: Assignment[] = [
   {
     id: 1,
     title: "Math Worksheet: Fractions",
     subject: "Mathematics",
     dueDate: "Today, 3:00 PM",
-    status: "pending",
+    status: "completed",
     points: 10,
     description: "Complete the fraction practice problems on page 42-43",
     type: "worksheet"
@@ -40,14 +45,14 @@ const mockAssignments = [
     title: "Science Lab Report",
     subject: "Science",
     dueDate: "Friday, 2:00 PM",
-    status: "completed",
+    status: "pending",
     points: 25,
     description: "Write up results from the plant growth experiment",
     type: "report"
   }
 ];
 
-export default function TodaysAssignments({ isLoading }) {
+export default function TodaysAssignments({ isLoading }: TodaysAssignmentsProps) {
   if (isLoading) {
     return (
       <Card className="bg-white/95 backdrop-blur-xl shadow-2xl border-0">
@@ -72,7 +77,7 @@ export default function TodaysAssignments({ isLoading }) {
     );
   }
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: AssignmentStatus) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800 border-green-200';
       case 'in_progress': return 'bg-blue-100 text-blue-800 border-blue-200';
@@ -81,7 +86,7 @@ export default function TodaysAssignments({ isLoading }) {
     }
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: AssignmentStatus) => {
     switch (status) {
       case 'completed': return CheckCircle2;
       case 'in_progress': return Clock;

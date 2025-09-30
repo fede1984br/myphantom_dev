@@ -1,10 +1,16 @@
+import { Summary } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TrendingUp, Calendar } from "lucide-react";
 import { format } from "date-fns";
 
-export default function ProgressTimeline({ summaries, isLoading }) {
+interface ProgressTimelineProps {
+  summaries: Summary[];
+  isLoading: boolean;
+}
+
+export default function ProgressTimeline({ summaries, isLoading }: ProgressTimelineProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0">

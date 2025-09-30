@@ -1,3 +1,4 @@
+import { Summary, Student } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +7,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CalendarIcon, TrendingUp, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 
-export default function WeeklySummaryCard({ summary, student, isLoading }) {
+interface WeeklySummaryCardProps {
+  summary: Summary;
+  student: Student;
+  isLoading: boolean;
+}
+
+export default function WeeklySummaryCard({ summary, student, isLoading }: WeeklySummaryCardProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0">

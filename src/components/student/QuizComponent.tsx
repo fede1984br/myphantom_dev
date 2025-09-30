@@ -1,9 +1,16 @@
+import { Activity, QuizAnswer } from '@/lib/types';
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, X, RefreshCw, Volume2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+interface QuizComponentProps {
+  activity: Activity;
+  onComplete: () => void;
+  onStart: () => void;
+}
 
 // Mock quiz questions - in a real app these would come from the activity content
 const mockQuestions = [
@@ -27,13 +34,13 @@ const mockQuestions = [
   }
 ];
 
-export default function QuizComponent({ activity, onComplete, onStart }) {
+export default function QuizComponent({ activity, onComplete, onStart }: QuizComponentProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [isStarted, setIsStarted] = useState(false);
-  const [answers, setAnswers] = useState([]);
+  const [answers, setAnswers] = useState<QuizAnswer[]>([]);
 
   const questions = mockQuestions; // In real app, this would be parsed from activity.content
   const totalQuestions = questions.length;
@@ -43,7 +50,7 @@ export default function QuizComponent({ activity, onComplete, onStart }) {
     onStart();
   };
 
-  const handleAnswerSelect = (answerIndex) => {
+  const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
   };
 
@@ -72,7 +79,7 @@ export default function QuizComponent({ activity, onComplete, onStart }) {
     }, 2000);
   };
 
-  const speakText = (text) => {
+  const speakText = (text: string) => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.8;

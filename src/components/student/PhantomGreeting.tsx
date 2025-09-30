@@ -1,10 +1,17 @@
+import { DailyStreak, PhantomMessage } from '@/lib/types';
 import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bot, RefreshCw, MessageSquare, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function PhantomGreeting({ message, streak, onNewMessage }) {
+interface PhantomGreetingProps {
+  message: PhantomMessage;
+  streak: DailyStreak;
+  onNewMessage: () => void;
+}
+
+export default function PhantomGreeting({ message, streak, onNewMessage }: PhantomGreetingProps) {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleRefresh = () => {
@@ -47,12 +54,12 @@ export default function PhantomGreeting({ message, streak, onNewMessage }) {
                   Hello, Emma! 👋
                 </h1>
                 <motion.p 
-                  key={message}
+                  key={message.text}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   className="text-lg text-white/90 font-medium"
                 >
-                  {message}
+                  {message.text}
                 </motion.p>
                 {streak?.current_streak > 0 && (
                   <div className="flex items-center gap-2 mt-2">

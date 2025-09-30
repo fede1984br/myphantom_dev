@@ -1,3 +1,4 @@
+import { Quest, PlayerProgress } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, Star, Play } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function DailyQuests({ quests, playerProgress, isLoading }) {
+interface DailyQuestsProps {
+  quests: Quest[];
+  playerProgress: PlayerProgress[];
+  isLoading: boolean;
+}
+
+export default function DailyQuests({ quests, playerProgress, isLoading }: DailyQuestsProps) {
   if (isLoading) {
     return (
       <Card className="bg-white/90 backdrop-blur-sm shadow-lg">

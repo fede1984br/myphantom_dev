@@ -16,6 +16,15 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
+interface AccessibilitySettings {
+  textToSpeech: boolean;
+  fontSize: number;
+  dyslexiaFriendly: boolean;
+  highContrast: boolean;
+  language: string;
+  animationsReduced: boolean;
+}
+
 export default function AccessibilityPanel() {
   const [isOpen, setIsOpen] = useState(false);
   const [settings, setSettings] = useState({
@@ -35,11 +44,13 @@ export default function AccessibilityPanel() {
     { value: 'fr', label: '🇫🇷 Français' }
   ];
 
-  const updateSetting = (key, value) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
-    // In a real app, this would apply the settings immediately
-  };
-
+const updateSetting = (
+  key: keyof AccessibilitySettings,
+  value: string | number | boolean
+) => {
+  setSettings((prev) => ({ ...prev, [key]: value }));
+};
+  
   return (
     <Card className="bg-white/90 backdrop-blur-sm shadow-lg border-2 border-purple-200">
       <CardHeader 
@@ -75,7 +86,7 @@ export default function AccessibilityPanel() {
             </div>
             <Switch
               checked={settings.textToSpeech}
-              onCheckedChange={(checked) => updateSetting('textToSpeech', checked)}
+              onCheckedChange={(checked: boolean) => updateSetting('textToSpeech', checked)}
             />
           </div>
 
@@ -88,7 +99,7 @@ export default function AccessibilityPanel() {
             <div className="px-2">
               <Slider
                 value={settings.fontSize}
-                onValueChange={(value) => updateSetting('fontSize', value)}
+                onValueChange={(value: number[]) => updateSetting('fontSize', value[0])}
                 min={12}
                 max={24}
                 step={2}
@@ -109,7 +120,7 @@ export default function AccessibilityPanel() {
             </div>
             <Switch
               checked={settings.dyslexiaFriendly}
-              onCheckedChange={(checked) => updateSetting('dyslexiaFriendly', checked)}
+              onCheckedChange={(checked: boolean) => updateSetting('dyslexiaFriendly', checked)}
             />
           </div>
 
@@ -121,7 +132,7 @@ export default function AccessibilityPanel() {
             </div>
             <Switch
               checked={settings.highContrast}
-              onCheckedChange={(checked) => updateSetting('highContrast', checked)}
+              onCheckedChange={(checked: boolean) => updateSetting('highContrast', checked)}
             />
           </div>
 
@@ -131,7 +142,7 @@ export default function AccessibilityPanel() {
               <Globe className="w-4 h-4 text-purple-600" />
               <label className="text-sm font-medium">Language</label>
             </div>
-            <Select value={settings.language} onValueChange={(value) => updateSetting('language', value)}>
+            <Select value={settings.language} onValueChange={(value: string) => updateSetting('language', value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -153,7 +164,7 @@ export default function AccessibilityPanel() {
             </div>
             <Switch
               checked={settings.animationsReduced}
-              onCheckedChange={(checked) => updateSetting('animationsReduced', checked)}
+              onCheckedChange={(checked: boolean) => updateSetting('animationsReduced', checked)}
             />
           </div>
 

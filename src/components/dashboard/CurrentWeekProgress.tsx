@@ -3,8 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BookOpen, Clock } from "lucide-react";
+import { Summary } from '@/lib/types';
 
-export default function CurrentWeekProgress({ summary, isLoading }) {
+interface CurrentWeekProgressProps {
+  summary: Summary;
+  isLoading: boolean;
+}
+
+export default function CurrentWeekProgress({ summary, isLoading }: CurrentWeekProgressProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0">
@@ -83,7 +89,7 @@ export default function CurrentWeekProgress({ summary, isLoading }) {
                     {subject.key_achievements.map((achievement, idx) => (
                       <li key={idx} className="flex items-start gap-1">
                         <span className="text-green-600 mt-1">•</span>
-                        {achievement}
+                        {achievement.name}
                       </li>
                     ))}
                   </ul>

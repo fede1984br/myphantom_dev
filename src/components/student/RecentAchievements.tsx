@@ -1,3 +1,4 @@
+import { StudentAchievement } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,11 @@ import { Trophy, Medal, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 
+interface RecentAchievementsProps {
+  achievements: StudentAchievement[];
+  isLoading: boolean;
+}
+
 const rarityColors = {
   common: 'bg-gray-100 text-gray-800 border-gray-200',
   rare: 'bg-blue-100 text-blue-800 border-blue-200',
@@ -13,7 +19,7 @@ const rarityColors = {
   legendary: 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-yellow-400'
 };
 
-export default function RecentAchievements({ achievements, isLoading }) {
+export default function RecentAchievements({ achievements, isLoading }: RecentAchievementsProps) {
   if (isLoading) {
     return (
       <Card className="bg-white/90 backdrop-blur-sm shadow-lg">

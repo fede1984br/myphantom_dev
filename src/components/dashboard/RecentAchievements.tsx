@@ -3,8 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Trophy, Star, Target } from "lucide-react";
+import { Student, Summary, Subject, Achievement, FormattedAchievement, HighlightItem } from '@/lib/types'; 
 
-export default function RecentAchievements({ student, summary, isLoading }) {
+interface RecentAchievementsProps {
+  student: Student;
+  summary: Summary;
+  isLoading: boolean;
+}
+
+export default function RecentAchievements({ student, summary, isLoading }: RecentAchievementsProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0">
@@ -29,20 +36,24 @@ export default function RecentAchievements({ student, summary, isLoading }) {
   }
 
   const highlights = summary?.highlights || [];
-  const allAchievements = summary?.subjects?.reduce((acc, subject) => {
-    if (subject.key_achievements) {
-      return [...acc, ...subject.key_achievements.map(achievement => ({
-        text: achievement,
-        subject: subject.name
-      }))];
-    }
-    return acc;
-  }, []) || [];
+  const allAchievements = summary?.subjects?.reduce((acc: FormattedAchievement[], subject: Subject) => {
+  if (subject.key_achievements) {
+    return [...acc, ...subject.key_achievements.map(achievement => ({
+      text: achievement,
+      subject: subject.name
+    }))];
+  }
+  return acc;
+}, []);
 
-  const combinedHighlights = [
-    ...highlights.map(highlight => ({ text: highlight, type: 'highlight' })),
-    ...allAchievements.map(achievement => ({ ...achievement, type: 'achievement' }))
-  ];
+  const combinedHighlights: HighlightItem[] = [
+  ...highlights.map((highlight): HighlightItem => ({ text: highlight, type: 'highlight' })),
+  ...allAchievements.map((achievement): HighlightItem => ({ 
+    text: achievement, 
+    type: 'achievement', 
+    subject: achievement.subject 
+  }))
+];
 
   return (
     <Card className="shadow-lg border-0 bg-white">
@@ -74,7 +85,9 @@ export default function RecentAchievements({ student, summary, isLoading }) {
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-neutral-800 font-medium">{item.text}</p>
+                  <p className="text-neutral-800 font-medium">
+                    {item.type === 'highlight' ? item.text : item.text.text.name}
+                  </p>
                   {item.subject && (
                     <Badge variant="secondary" className="mt-2 bg-neutral-100 text-neutral-600">
                       {item.subject}

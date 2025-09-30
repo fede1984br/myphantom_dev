@@ -1,4 +1,5 @@
-import React from 'react';
+import { Quest, PlayerProgress } from '@/lib/types';
+import { LucideIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -18,6 +19,12 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
+interface QuickQuestsProps {
+  quests: Quest[];
+  playerProgress: PlayerProgress[];
+  isLoading: boolean;
+}
+
 const subjectIcons = {
   mathematics: Calculator,
   english: BookOpen,
@@ -33,7 +40,7 @@ const difficultyColors = {
   boss: 'from-red-500 to-pink-600'
 };
 
-export default function QuickQuests({ quests, playerProgress, isLoading }) {
+export default function QuickQuests({ quests, playerProgress, isLoading }: QuickQuestsProps) {
   if (isLoading) {
     return (
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -46,7 +53,7 @@ export default function QuickQuests({ quests, playerProgress, isLoading }) {
     );
   }
 
-  const getQuestProgress = (questId) => {
+  const getQuestProgress = (questId: string): PlayerProgress | undefined => {
     return playerProgress.find(p => p.quest_id === questId);
   };
 
@@ -73,7 +80,7 @@ export default function QuickQuests({ quests, playerProgress, isLoading }) {
                   : 'border-purple-200 bg-white shadow-lg hover:shadow-xl'
             }`}
           >
-            {quest.is_boss_quest && (
+            {quest.is_boss && (
               <div className="absolute -top-2 -right-2">
                 <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
                   <Crown className="w-4 h-4 text-white" />
@@ -118,7 +125,7 @@ export default function QuickQuests({ quests, playerProgress, isLoading }) {
             
             <div className="flex items-center justify-between">
               <div className="text-xs text-gray-500">
-                ⏱️ {quest.estimated_time}min
+                ⏱️ {quest.estimated_time_min}min
                 {quest.rewards?.xp_points && (
                   <span className="ml-2">⭐ {quest.rewards.xp_points}XP</span>
                 )}

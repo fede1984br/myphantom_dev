@@ -1,8 +1,14 @@
 import React from 'react';
+import { QuestFilterState } from '@/lib/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 
-export default function QuestFilters({ filters, setFilters }) {
+interface QuestFiltersProps {
+  filters: QuestFilterState;
+  setFilters: React.Dispatch<React.SetStateAction<QuestFilterState>>;
+}
+
+export default function QuestFilters({ filters, setFilters }: QuestFiltersProps) {
   const subjects = [
     { value: 'all', label: 'All Subjects', emoji: '📚' },
     { value: 'mathematics', label: 'Mathematics', emoji: '🧮' },

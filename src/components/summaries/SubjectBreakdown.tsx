@@ -1,9 +1,15 @@
+import { Summary } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BookOpen, Clock, Target } from "lucide-react";
+
+interface SubjectBreakdownProps {
+  summary: Summary;
+  isLoading: boolean;
+}
 
 const subjectColors = {
   'Mathematics': 'bg-blue-100 text-blue-800 border-blue-200',
@@ -13,7 +19,7 @@ const subjectColors = {
   'Art': 'bg-pink-100 text-pink-800 border-pink-200'
 };
 
-export default function SubjectBreakdown({ summary, isLoading }) {
+export default function SubjectBreakdown({ summary, isLoading }: SubjectBreakdownProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0">
@@ -89,7 +95,7 @@ export default function SubjectBreakdown({ summary, isLoading }) {
                     {subject.key_achievements.map((achievement, idx) => (
                       <li key={idx} className="text-sm text-emerald-700 flex items-start gap-2">
                         <span className="text-emerald-600 mt-1 flex-shrink-0">✓</span>
-                        <span>{achievement}</span>
+                        <span>{achievement.name}</span>
                       </li>
                     ))}
                   </ul>

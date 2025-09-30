@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Quest, StudentProgress, DailyStreak, StudentAchievement } from "@/entities/all";
+import { api } from "@/lib/api";
+import { Quest, PlayerProgress, DailyStreak, StudentAchievement, PhantomMessage } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,27 +12,28 @@ import {
   Target,
   BookOpen,
   Calendar,
-  Sparkles
+  Sparkles,
+  Rocket, Star, BrainCircuit
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import PhantomGreeting from "../Components/student/PhantomGreeting";
-import QuickQuests from "../Components/student/QuickQuests";
-import PhantomChat from "../Components/student/PhantomChat";
-import StudentStats from "../Components/student/StudentStats";
-import TodaysAssignments from "../Components/student/TodaysAssignments";
-import PhantomTips from "../Components/student/PhantomTips";
+import PhantomGreeting from "../components/student/PhantomGreeting";
+import QuickQuests from "../components/student/QuickQuests";
+import PhantomChat from "../components/student/PhantomChat";
+import StudentStats from "../components/student/StudentStats";
+import TodaysAssignments from "../components/student/TodaysAssignments";
+import PhantomTips from "../components/student/PhantomTips";
 
 
 export default function StudentDashboard() {
-  const [quests, setQuests] = useState([]);
-  const [playerProgress, setPlayerProgress] = useState([]);
-  const [streak, setStreak] = useState(null);
-  const [achievements, setAchievements] = useState([]);
+  const [quests, setQuests] = useState<Quest[]>([]);
+  const [playerProgress, setPlayerProgress] = useState<PlayerProgress[]>([]);
+  const [streak, setStreak] = useState<DailyStreak | null>(null);
+  const [achievements, setAchievements] = useState<StudentAchievement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [phantomMessage, setPhantomMessage] = useState("");
+  const [phantomMessage, setPhantomMessage] = useState<PhantomMessage | null>(null);
 
   const studentId = "student_001";
 
@@ -44,26 +46,25 @@ export default function StudentDashboard() {
     setIsLoading(true);
     
     const [questsData, progressData, streakData, achievementsData] = await Promise.all([
-      Quest.list(),
-      StudentProgress.filter({ student_id: studentId }),
-      DailyStreak.filter({ student_id: studentId }),
-      StudentAchievement.filter({ student_id: studentId }, '-earned_at', 3)
+      api.quests.list(),
+      api.playerProgress.getForStudent(studentId),
+      api.dailyStreak.getForStudent(studentId),
+      api.achievements.getAll({ student_id: studentId })
     ]);
 
     setQuests(questsData);
     setPlayerProgress(progressData);
     setStreak(streakData[0] || null);
-    setAchievements(achievementsData);
+    setAchievements(achievementsData.slice(0, 3));
     setIsLoading(false);
   };
 
   const generatePhantomGreeting = () => {
-    const greetings = [
-      "Ready for another amazing learning adventure? 🚀",
-      "Your curiosity is your superpower! Let's use it today! ⚡",
-      "Every question you ask makes you stronger! What shall we explore? 🌟",
-      "I'm here to help you discover incredible things! Let's start! 💫",
-      "Your learning journey is unique and special! Ready to continue? 🎯"
+    const greetings: PhantomMessage[] = [
+      { text: "Ready for another amazing learning adventure?", icon: Rocket, color: "text-purple-600", bgColor: "bg-purple-100" },
+      { text: "Your curiosity is your superpower! Let's use it today!", icon: Sparkles, color: "text-yellow-600", bgColor: "bg-yellow-100" },
+      { text: "Every question you ask makes you stronger! What shall we explore?", icon: Star, color: "text-blue-600", bgColor: "bg-blue-100" },
+      { text: "I'm here to help you discover incredible things! Let's start!", icon: BrainCircuit, color: "text-green-600", bgColor: "bg-green-100" },
     ];
     setPhantomMessage(greetings[Math.floor(Math.random() * greetings.length)]);
   };
@@ -72,22 +73,26 @@ export default function StudentDashboard() {
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
         {/* Phantom Greeting */}
-        <PhantomGreeting 
-          message={phantomMessage}
-          streak={streak}
-          onNewMessage={generatePhantomGreeting}
-        />
+        {phantomMessage && streak && (
+          <PhantomGreeting 
+            message={phantomMessage}
+            streak={streak}
+            onNewMessage={generatePhantomGreeting}
+          />
+        )}
 
         {/* Main Dashboard Grid */}
         <div className="grid lg:grid-cols-4 gap-6 mt-8">
           {/* Left Column - Main Content */}
           <div className="lg:col-span-3 space-y-6">
             {/* Student Stats */}
-            <StudentStats 
-              streak={streak}
-              achievements={achievements}
-              isLoading={isLoading}
-            />
+            {streak && (
+              <StudentStats 
+                streak={streak}
+                achievements={achievements}
+                isLoading={isLoading}
+              />
+            )}
 
             {/* Today's Learning Path */}
             <Card className="bg-white/95 backdrop-blur-xl shadow-2xl border-0 overflow-hidden">

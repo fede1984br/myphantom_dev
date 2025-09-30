@@ -1,3 +1,4 @@
+import { DailyStreak, StudentAchievement } from '@/lib/types';
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +7,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Flame, Star, Trophy, Crown, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function PlayerStats({ streak, achievements, isLoading }) {
+interface PlayerStatsProps {
+  streak: DailyStreak;
+  achievements: StudentAchievement[];
+  isLoading: boolean;
+}
+
+export default function PlayerStats({ streak, achievements, isLoading }: PlayerStatsProps) {
   if (isLoading) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">

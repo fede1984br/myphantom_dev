@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Student } from "@/entities/all";
+import { Student } from "@/lib/types";
+import { api } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { User, GraduationCap, Heart, Target, Edit3 } from "lucide-react";
 
-import ProfileHeader from "../Components/profile/ProfileHeader";
-import LearningProfile from "../Components/profile/LearningProfile";
-import ProgressOverview from "../Components/profile/ProgressOverview";
+import ProfileHeader from "../components/profile/ProfileHeader";
+import LearningProfile from "../components/profile/LearningProfile";
+import ProgressOverview from "../components/profile/ProgressOverview";
 
 export default function StudentProfile() {
-  const [student, setStudent] = useState(null);
+  const [student, setStudent] = useState<Student | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function StudentProfile() {
 
   const loadData = async () => {
     setIsLoading(true);
-    const studentsData = await Student.list();
+    const studentsData = await api.students.getAll();
     if (studentsData.length > 0) {
       setStudent(studentsData[0]);
     }
@@ -48,25 +49,29 @@ export default function StudentProfile() {
         </div>
 
         {/* Profile Content */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1">
-            <ProfileHeader 
-              student={student}
-              isLoading={isLoading}
-            />
+        {isLoading ? (
+          <p>Loading profile...</p>
+        ) : student ? (
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1">
+              <ProfileHeader 
+                student={student}
+                isLoading={isLoading}
+              />
+            </div>
+            
+            <div className="lg:col-span-2 space-y-6">
+              <LearningProfile 
+                student={student}
+                isLoading={isLoading}
+              />
+              <ProgressOverview 
+                student={student}
+                isLoading={isLoading}
+              />
+            </div>
           </div>
-          
-          <div className="lg:col-span-2 space-y-6">
-            <LearningProfile 
-              student={student}
-              isLoading={isLoading}
-            />
-            <ProgressOverview 
-              student={student}
-              isLoading={isLoading}
-            />
-          </div>
-        </div>
+        ) : <p>No student data found.</p>}
       </div>
     </div>
   );

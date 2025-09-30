@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Quest, StudentProgress } from "@/entities/all";
+import { Quest, PlayerProgress, Activity } from "@/lib/types";
+import { api } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -17,20 +18,20 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-
-import QuestActivity from "../Components/student/QuestActivity";
-import QuizComponent from "../Components/student/QuizComponent";
-import MotivationalMessages from "../Components/student/MotivationalMessages";
+ 
+import QuestActivity from "@/components/student/QuestActivity";
+import QuizComponent from "@/components/student/QuizComponent";
+import MotivationalMessages from "@/components/student/MotivationalMessages";
 
 export default function QuestDetail() {
   const navigate = useNavigate();
-  const [quest, setQuest] = useState(null);
-  const [progress, setProgress] = useState(null);
+  const [quest, setQuest] = useState<Quest | null>(null);
+  const [progress, setProgress] = useState<PlayerProgress | null>(null);
   const [currentActivity, setCurrentActivity] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [timeSpent, setTimeSpent] = useState(0);
   const [isActive, setIsActive] = useState(false);
-
+ 
   // Mock quest ID - in real app would come from URL params
   const questId = "quest_001";
   const studentId = "student_001";
@@ -38,46 +39,48 @@ export default function QuestDetail() {
   useEffect(() => {
     loadQuestData();
   }, []);
-
+ 
   useEffect(() => {
-    let interval = null;
+    let interval: NodeJS.Timeout | null = null;
     if (isActive) {
       interval = setInterval(() => {
         setTimeSpent(time => time + 1);
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isActive]);
-
+ 
   const loadQuestData = async () => {
     setIsLoading(true);
     const [questData, progressData] = await Promise.all([
-      Quest.get(questId),
-      StudentProgress.filter({ student_id: studentId, quest_id: questId })
+      api.quests.get(questId),
+      api.playerProgress.filter({ student_id: studentId, quest_id: questId })
     ]);
     
-    setQuest(questData);
+    setQuest(questData || null);
     setProgress(progressData[0] || null);
     setIsLoading(false);
   };
-
+ 
   const handleActivityComplete = async () => {
     if (!quest || !quest.content?.activities) return;
-
+ 
     const nextActivity = currentActivity + 1;
     const totalActivities = quest.content.activities.length;
     const newProgress = Math.round((nextActivity / totalActivities) * 100);
-
+ 
     // Update progress
     if (progress) {
-      await StudentProgress.update(progress.id, {
+      await api.playerProgress.update(progress.id, {
         progress_percentage: newProgress,
         activities_completed: [...(progress.activities_completed || []), `activity_${currentActivity}`],
         status: newProgress === 100 ? 'completed' : 'in_progress',
         time_spent: (progress.time_spent || 0) + timeSpent
       });
     }
-
+ 
     if (nextActivity >= totalActivities) {
       // Quest completed!
       setIsActive(false);
@@ -86,13 +89,13 @@ export default function QuestDetail() {
       setCurrentActivity(nextActivity);
     }
   };
-
-  const formatTime = (seconds) => {
+ 
+  const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
-
+ 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-400 p-4">
@@ -105,7 +108,7 @@ export default function QuestDetail() {
       </div>
     );
   }
-
+ 
   if (!quest) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-400 p-4 flex items-center justify-center">
@@ -119,11 +122,11 @@ export default function QuestDetail() {
       </div>
     );
   }
-
-  const currentActivityData = quest.content?.activities?.[currentActivity];
+ 
+  const currentActivityData: Activity | undefined = quest.content?.activities?.[currentActivity];
   const totalActivities = quest.content?.activities?.length || 0;
-  const progressPercentage = totalActivities > 0 ? Math.round(((currentActivity + 1) / totalActivities) * 100) : 0;
-
+  const progressPercentage = progress?.progress_percentage ?? (totalActivities > 0 ? Math.round((currentActivity / totalActivities) * 100) : 0);
+ 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-400 p-4">
       <div className="max-w-4xl mx-auto">
@@ -142,7 +145,7 @@ export default function QuestDetail() {
               {quest.icon} {quest.title}
             </h1>
             <div className="flex items-center gap-4 mt-1">
-              <Badge className="bg-white/20 text-white border-white/30">
+              <Badge variant="outline" className="bg-white/20 text-white border-white/30 capitalize">
                 {quest.subject}
               </Badge>
               <div className="flex items-center gap-1 text-white/90 text-sm">
@@ -156,7 +159,7 @@ export default function QuestDetail() {
             </div>
           </div>
         </div>
-
+ 
         {/* Progress Bar */}
         <Card className="bg-white/90 backdrop-blur-sm mb-6">
           <CardContent className="p-4">
@@ -164,10 +167,10 @@ export default function QuestDetail() {
               <span className="font-medium text-gray-800">Quest Progress</span>
               <span className="text-2xl font-bold text-purple-600">{progressPercentage}%</span>
             </div>
-            <Progress value={progressPercentage} className="h-3 bg-gray-200" />
+            <Progress value={progressPercentage} className="h-3" />
           </CardContent>
         </Card>
-
+ 
         {/* Main Content */}
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
@@ -186,20 +189,22 @@ export default function QuestDetail() {
                     onStart={() => setIsActive(true)}
                   />
                 ) : (
-                  <QuestActivity 
-                    activity={currentActivityData}
-                    onComplete={handleActivityComplete}
-                    onStart={() => setIsActive(true)}
-                    isActive={isActive}
-                    setIsActive={setIsActive}
-                  />
+                  currentActivityData && (
+                    <QuestActivity 
+                      activity={currentActivityData}
+                      onComplete={handleActivityComplete}
+                      onStart={() => setIsActive(true)}
+                      isActive={isActive}
+                      setIsActive={setIsActive}
+                    />
+                  )
                 )}
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="space-y-6">
-            <MotivationalMessages progress={progressPercentage} />
+          <div className="space-y-6 flex flex-col">
+            {progress && <MotivationalMessages progress={progress} />}
             
             {/* Quest Info */}
             <Card className="bg-white/90 backdrop-blur-sm">
@@ -213,13 +218,13 @@ export default function QuestDetail() {
                 <div className="space-y-3">
                   {quest.rewards?.xp_points && (
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">XP Points</span>
+                      <span className="text-sm text-gray-700 font-medium">XP Points</span>
                       <Badge className="bg-blue-100 text-blue-800">
                         +{quest.rewards.xp_points} XP
                       </Badge>
                     </div>
                   )}
-                  {quest.rewards?.coins && (
+                  {quest.rewards?.coins > 0 && (
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">Gold Coins</span>
                       <Badge className="bg-yellow-100 text-yellow-800">
@@ -228,7 +233,7 @@ export default function QuestDetail() {
                     </div>
                   )}
                   {quest.rewards?.badges && quest.rewards.badges.length > 0 && (
-                    <div>
+                    <div className="pt-2">
                       <span className="text-sm text-gray-600">Badges</span>
                       <div className="flex gap-1 mt-1">
                         {quest.rewards.badges.map((badge, index) => (
@@ -242,15 +247,17 @@ export default function QuestDetail() {
                 </div>
               </CardContent>
             </Card>
-
+ 
             {/* Help Button */}
-            <Button
-              className="w-full bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white"
-              size="lg"
-            >
-              <HelpCircle className="w-5 h-5 mr-2" />
-              🆘 Need Help?
-            </Button>
+            <div className="mt-auto">
+              <Button
+                className="w-full bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white"
+                size="lg"
+              >
+                <HelpCircle className="w-5 h-5 mr-2" />
+                🆘 Need Help?
+              </Button>
+            </div>
           </div>
         </div>
       </div>

@@ -1,31 +1,36 @@
+import { PlayerProgress } from '@/lib/types';
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Star, ThumbsUp, Smile, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const getMotivationalMessage = (progress) => {
-  if (progress >= 90) {
+interface MotivationalMessagesProps {
+  progress: PlayerProgress;
+}
+
+const getMotivationalMessage = (progress: PlayerProgress) => {
+  if (progress.progress_percentage >= 90) {
     return {
       text: "You're almost there! You're doing incredible! 🌟",
       icon: Star,
       color: "from-yellow-400 to-orange-500",
       bgColor: "from-yellow-50 to-orange-50"
     };
-  } else if (progress >= 70) {
+  } else if (progress.progress_percentage >= 70) {
     return {
       text: "Fantastic progress! Keep up the great work! 💪",
       icon: ThumbsUp,
       color: "from-green-400 to-emerald-500",
       bgColor: "from-green-50 to-emerald-50"
     };
-  } else if (progress >= 50) {
+  } else if (progress.progress_percentage >= 50) {
     return {
       text: "You're doing great! Every step counts! ⚡",
       icon: Zap,
       color: "from-blue-400 to-purple-500",
       bgColor: "from-blue-50 to-purple-50"
     };
-  } else if (progress >= 25) {
+  } else if (progress.progress_percentage >= 25) {
     return {
       text: "Nice start! You've got this! 🚀",
       icon: Smile,
@@ -50,7 +55,7 @@ const encouragingTips = [
   "🦋 Progress, not perfection - you're doing amazing!"
 ];
 
-export default function MotivationalMessages({ progress }) {
+export default function MotivationalMessages({ progress }: MotivationalMessagesProps) {
   const [currentTip, setCurrentTip] = useState(0);
   const [showTip, setShowTip] = useState(true);
 

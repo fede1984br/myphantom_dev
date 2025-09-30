@@ -1,3 +1,4 @@
+import { Message } from '@/lib/types';
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,15 @@ import {
   BookOpen
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { InvokeLLM } from "@/integrations/Core";
+import { invokeLLM } from "@/integrations/Core";
+
+interface MessageBubbleProps {
+  message: Message;
+}
+
+interface Window {
+  webkitSpeechRecognition: any;
+}
 
 const quickPrompts = [
   { text: "Help with math homework", icon: Calculator, color: "bg-blue-100 text-blue-800" },
@@ -25,9 +34,9 @@ const quickPrompts = [
 ];
 
 export default function PhantomChat({ compact = false }) {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
-      id: 1,
+      id: 'initial-message',
       type: 'phantom',
       content: "Hi Emma! I'm your AI learning companion. I'm here to help you with homework, explain concepts, create practice quizzes, and support you through your learning journey. What would you like to explore today? 🚀",
       timestamp: new Date()
@@ -36,7 +45,7 @@ export default function PhantomChat({ compact = false }) {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,8 +58,8 @@ export default function PhantomChat({ compact = false }) {
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
 
-    const userMessage = {
-      id: Date.now(),
+    const userMessage: Message = {
+      id: Date.now().toString(),
       type: 'user',
       content: inputMessage,
       timestamp: new Date()
@@ -61,13 +70,12 @@ export default function PhantomChat({ compact = false }) {
     setIsLoading(true);
 
     try {
-      // Simulate AI response with InvokeLLM
-      const response = await InvokeLLM({
-        prompt: `You are Phantom, a friendly AI tutor for K-12 students. You help with homework, explain concepts in simple terms, create practice problems, and provide emotional support. The student just said: "${inputMessage}". Respond in a helpful, encouraging, and age-appropriate way. Keep responses concise for the chat interface. Use emojis to make it engaging.`
-      });
+      const fullPrompt = `You are Phantom, a friendly AI tutor for K-12 students. You help with homework, explain concepts in simple terms, create practice problems, and provide emotional support. The student just said: "${inputMessage}". Respond in a helpful, encouraging, and age-appropriate way. Keep responses concise for the chat interface. Use emojis to make it engaging.`;
 
-      const phantomMessage = {
-        id: Date.now() + 1,
+      const response = await invokeLLM(fullPrompt);
+
+      const phantomMessage: Message = {
+        id: (Date.now() + 1).toString(),
         type: 'phantom',
         content: response,
         timestamp: new Date()
@@ -75,8 +83,8 @@ export default function PhantomChat({ compact = false }) {
 
       setMessages(prev => [...prev, phantomMessage]);
     } catch (error) {
-      const errorMessage = {
-        id: Date.now() + 1,
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
         type: 'phantom',
         content: "I'm having trouble connecting right now. Can you try asking me again? 😊",
         timestamp: new Date()
@@ -87,7 +95,7 @@ export default function PhantomChat({ compact = false }) {
     setIsLoading(false);
   };
 
-  const handleQuickPrompt = (promptText) => {
+  const handleQuickPrompt = (promptText: string) => {
     setInputMessage(promptText);
   };
 
@@ -102,7 +110,7 @@ export default function PhantomChat({ compact = false }) {
         setIsListening(true);
       };
 
-      recognition.onresult = (event) => {
+      recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         setInputMessage(transcript);
         setIsListening(false);
@@ -122,7 +130,7 @@ export default function PhantomChat({ compact = false }) {
     }
   };
 
-  const MessageBubble = ({ message }) => (
+  const MessageBubble = ({ message }: MessageBubbleProps) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

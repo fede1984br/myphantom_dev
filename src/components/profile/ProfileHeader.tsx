@@ -3,8 +3,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { User, GraduationCap, Heart } from "lucide-react";
+import { Student as BaseStudent } from '@/lib/types';
 
-export default function ProfileHeader({ student, isLoading }) {
+interface ProfileHeaderProps {
+  student: BaseStudent & {
+    age?: number;
+    sen_status?: boolean;
+    learning_profile?: {
+      learning_style?: string;
+    };
+  };
+  isLoading: boolean;
+} 
+
+export default function ProfileHeader({ student, isLoading }: ProfileHeaderProps) {
   if (isLoading) {
     return (
       <Card className="shadow-lg border-0">
