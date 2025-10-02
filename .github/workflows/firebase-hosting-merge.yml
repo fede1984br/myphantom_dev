@@ -16,8 +16,8 @@ jobs:
           node-version: '20'
 
       -  name: Clear npm cache
-      -  run: npm cache clean --force
-
+         run: npm cache clean --force
+         
       - run: npm ci
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
