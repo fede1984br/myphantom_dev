@@ -18,8 +18,8 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         {/* Home Page */}
         <Route index element={<h1>Welcome to My Phantom AI</h1>} />
-
-        {/* Add all your other pages here */}
+        
+        {/* All other pages are children of RootLayout */}
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="student-dashboard" element={<StudentDashboard />} />
         <Route path="achievements" element={<Achievements />} />
