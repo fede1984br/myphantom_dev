@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "myphantomdev"
-  }
+  },
+  "targets": {
+    "myphantomdev": {
+      "hosting": {
+        "student-portal": [
+          "myphantomdev"
+        ],
+        "parent-portal": [
+          "myphantom-parent"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
