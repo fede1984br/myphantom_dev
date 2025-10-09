@@ -18,6 +18,29 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
+// Read the variable set during the build process
+const portalType = process.env.REACT_APP_PORTAL_TYPE;
+
+return (
+  <nav>
+    {/* --- Student-only links will only appear if portalType is 'student' --- */}
+    {portalType === 'student' && (
+      <>
+        <Link to="/quest-map">Quest Map</Link>
+        <Link to="/achievements">Achievements</Link>
+      </>
+    )}
+
+    {/* --- Parent-only links will only appear if portalType is 'parent' --- */}
+    {portalType === 'parent' && (
+      <Link to="/parent-dashboard">Parent Dashboard</Link>
+    )}
+
+    {/* --- Shared links will always appear --- */}
+    <Link to="/profile">Profile</Link>
+  </nav>
+);
+
 const navigationItems = [
   {
     title: "Dashboard",

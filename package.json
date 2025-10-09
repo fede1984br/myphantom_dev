@@ -31,11 +31,13 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^4.9.5"
   },
-  "scripts": {
+"scripts": {
   "start": "craco start",
+  "start:student": "cross-env REACT_APP_PORTAL_TYPE='student' craco start",
+  "start:parent": "cross-env REACT_APP_PORTAL_TYPE='parent' craco start",
   "build": "CI=false craco build",
-  "build:student": "cross-env BUILD_PATH='dist/student' CI=false craco build",
-  "build:parent": "cross-env BUILD_PATH='dist/parent' CI=false craco build",
+  "build:student": "cross-env REACT_APP_PORTAL_TYPE='student' BUILD_PATH='dist/student' CI=false craco build",
+  "build:parent": "cross-env REACT_APP_PORTAL_TYPE='parent' BUILD_PATH='dist/parent' CI=false craco build",
   "test": "craco test",
   "eject": "react-scripts eject"
 },
