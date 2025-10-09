@@ -19,16 +19,13 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
       - run: npm ci
-      # ---- CHANGED SECTION START ----
       - name: Build Student Portal
         run: npm run build:student
       - name: Build Parent Portal
         run: npm run build:parent
-      # ---- CHANGED SECTION END ----
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}'
           projectId: myphantomdev
-          # ---- ADD THIS LINE ----
-          target: student-portal parent-portal
+          target: "student-portal parent-portal"
