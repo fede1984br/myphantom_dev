@@ -21,10 +21,5 @@ jobs:
         run: npm run build:student
       - name: Build Parent Portal
         run: npm run build:parent
-      - uses: npx firebase-tools@latest deploy --only hosting:student-portal,hosting:parent-portal --project myphantomdev
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}'
-          channelId: live
-          projectId: myphantomdev
-          target: "student-portal parent-portal"
+      - name: Deploy to Firebase Hosting
+        run: npx firebase-tools@latest deploy --only hosting:student-portal,hosting:parent-portal --project myphantomdev --token ${{ secrets.FIREBASE_TOKEN }}
