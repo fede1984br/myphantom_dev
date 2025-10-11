@@ -1,8 +1,9 @@
-
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { createPageUrl } from "@/utils";
-import { Bot, Home, Map, MessageSquare, Trophy, Settings, Zap } from "lucide-react";
+// The problematic import has been removed.
+
+// Updated imports to include new icons
+import { Bot, Home, Map, MessageSquare, Trophy, User, LayoutGrid, Zap } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,54 +19,65 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-// Read the variable set during the build process
-const portalType = process.env.REACT_APP_PORTAL_TYPE;
-
-return (
-  <nav>
-    {/* --- Student-only links will only appear if portalType is 'student' --- */}
-    {portalType === 'student' && (
-      <>
-        <Link to="/quest-map">Quest Map</Link>
-        <Link to="/achievements">Achievements</Link>
-      </>
-    )}
-
-    {/* --- Parent-only links will only appear if portalType is 'parent' --- */}
-    {portalType === 'parent' && (
-      <Link to="/parent-dashboard">Parent Dashboard</Link>
-    )}
-
-    {/* --- Shared links will always appear --- */}
-    <Link to="/profile">Profile</Link>
-  </nav>
-);
-
-const navigationItems = [
-  {
-    title: "Dashboard",
-    url: createPageUrl("StudentDashboard"),
-    icon: Home,
-  },
-  {
-    title: "Quest Map",
-    url: createPageUrl("QuestMap"),
-    icon: Map,
-  },
-  {
-    title: "Phantom Chat",
-    url: createPageUrl("PhantomChat"),
-    icon: MessageSquare,
-  },
-  {
-    title: "Achievements",
-    url: createPageUrl("Achievements"),
-    icon: Trophy,
-  },
-];
-
 export default function Layout({ children, currentPageName }) {
-  const location = useLocation();
+  // const location = useLocation(); // This was causing a crash
+  const portalType = process.env.REACT_APP_PORTAL_TYPE;
+
+  let navigationItems = [];
+  let quickStatsVisible = false;
+
+  // Conditionally build the navigation array based on the portal type
+  if (portalType === 'parent') {
+    // --- PARENT PORTAL NAVIGATION ---
+    quickStatsVisible = false; // Hide quick stats for parents
+    navigationItems = [
+      {
+        title: "Home",
+        url: "/home",
+        icon: Home,
+      },
+      {
+        title: "Parent Dashboard",
+        url: "/parent-dashboard",
+        icon: LayoutGrid,
+      },
+      {
+        title: "Profile",
+        url: "/profile",
+        icon: User,
+      },
+    ];
+  } else {
+    // --- STUDENT PORTAL NAVIGATION (DEFAULT) ---
+    quickStatsVisible = true; // Show quick stats for students
+    navigationItems = [
+      {
+        title: "Home",
+        url: "/home",
+        icon: Home,
+      },
+      {
+        title: "Student Dashboard",
+        url: "/student-dashboard",
+        icon: LayoutGrid,
+      },
+      {
+        title: "Achievements",
+        url: "/achievements",
+        icon: Trophy,
+      },
+      {
+        title: "Quest Map",
+        url: "/quest-map",
+        icon: Map,
+      },
+      {
+        title: "Profile",
+        url: "/profile",
+        icon: User,
+      },
+    ];
+  }
 
   return (
     <SidebarProvider>
@@ -115,11 +127,7 @@ export default function Layout({ children, currentPageName }) {
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton 
                         asChild 
-                        className={`hover:bg-white/20 transition-all duration-300 rounded-2xl ${
-                          location.pathname === item.url 
-                            ? 'bg-white/30 text-black shadow-lg backdrop-blur-sm' 
-                            : 'text-black/80 hover:text-black'
-                        }`}
+                        className="hover:bg-white/20 transition-all duration-300 rounded-2xl text-black/80 hover:text-black"
                       >
                         <Link to={item.url} className="flex items-center gap-3 px-4 py-3">
                           <item.icon className="w-5 h-5" />
@@ -132,30 +140,33 @@ export default function Layout({ children, currentPageName }) {
               </SidebarGroupContent>
             </SidebarGroup>
 
-            <SidebarGroup className="mt-8">
-              <SidebarGroupLabel className="text-black/60 font-semibold uppercase tracking-wider px-3 py-3">
-                ⚡ Quick Stats
-              </SidebarGroupLabel>
-              <SidebarGroupContent>
-                <div className="px-4 py-3 space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-black/70 flex items-center gap-2">
-                      <Zap className="w-4 h-4" />
-                      Level
-                    </span>
-                    <span className="font-bold text-yellow-600">Level 4</span>
+            {/* Conditionally render the Quick Stats section */}
+            {quickStatsVisible && (
+              <SidebarGroup className="mt-8">
+                <SidebarGroupLabel className="text-black/60 font-semibold uppercase tracking-wider px-3 py-3">
+                  ⚡ Quick Stats
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <div className="px-4 py-3 space-y-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-black/70 flex items-center gap-2">
+                        <Zap className="w-4 h-4" />
+                        Level
+                      </span>
+                      <span className="font-bold text-yellow-600">Level 4</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-black/70">Streak</span>
+                      <span className="font-bold text-orange-600">5 days 🔥</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-black/70">XP Points</span>
+                      <span className="font-bold text-purple-600">347 XP</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-black/70">Streak</span>
-                    <span className="font-bold text-orange-600">5 days 🔥</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-black/70">XP Points</span>
-                    <span className="font-bold text-purple-600">347 XP</span>
-                  </div>
-                </div>
-              </SidebarGroupContent>
-            </SidebarGroup>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
           </SidebarContent>
 
           <SidebarFooter className="border-t border-white/20 p-6">
