@@ -1,9 +1,8 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-// The problematic import has been removed.
 
 // Updated imports to include new icons
-import { Bot, Home, Map, MessageSquare, Trophy, User, LayoutGrid, Zap } from "lucide-react";
+import { Bot, Home, Map, Trophy, User, LayoutGrid, Zap } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -19,9 +18,12 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-export default function Layout({ children, currentPageName }) {
-  // const location = useLocation(); // This was causing a crash
+export default function Layout({ children }) {
+  const location = useLocation();
   const portalType = process.env.REACT_APP_PORTAL_TYPE;
+
+  // FOR DEBUGGING: This will appear in your browser's developer console.
+  console.log("Current Portal Type:", portalType);
 
   let navigationItems = [];
   let quickStatsVisible = false;
@@ -31,51 +33,19 @@ export default function Layout({ children, currentPageName }) {
     // --- PARENT PORTAL NAVIGATION ---
     quickStatsVisible = false; // Hide quick stats for parents
     navigationItems = [
-      {
-        title: "Home",
-        url: "/home",
-        icon: Home,
-      },
-      {
-        title: "Parent Dashboard",
-        url: "/parent-dashboard",
-        icon: LayoutGrid,
-      },
-      {
-        title: "Profile",
-        url: "/profile",
-        icon: User,
-      },
+      { title: "Home", url: "/home", icon: Home },
+      { title: "Parent Dashboard", url: "/parent-dashboard", icon: LayoutGrid },
+      { title: "Profile", url: "/profile", icon: User },
     ];
   } else {
     // --- STUDENT PORTAL NAVIGATION (DEFAULT) ---
     quickStatsVisible = true; // Show quick stats for students
     navigationItems = [
-      {
-        title: "Home",
-        url: "/home",
-        icon: Home,
-      },
-      {
-        title: "Student Dashboard",
-        url: "/student-dashboard",
-        icon: LayoutGrid,
-      },
-      {
-        title: "Achievements",
-        url: "/achievements",
-        icon: Trophy,
-      },
-      {
-        title: "Quest Map",
-        url: "/quest-map",
-        icon: Map,
-      },
-      {
-        title: "Profile",
-        url: "/profile",
-        icon: User,
-      },
+      { title: "Home", url: "/home", icon: Home },
+      { title: "Student Dashboard", url: "/student-dashboard", icon: LayoutGrid },
+      { title: "Achievements", url: "/achievements", icon: Trophy },
+      { title: "Quest Map", url: "/quest-map", icon: Map },
+      { title: "Profile", url: "/profile", icon: User },
     ];
   }
 
@@ -92,7 +62,6 @@ export default function Layout({ children, currentPageName }) {
             --phantom-dark: #2C1810;
             --phantom-light: #F8F6FF;
           }
-          
           body {
             background: linear-gradient(135deg, var(--phantom-purple) 0%, var(--phantom-blue) 25%, var(--phantom-pink) 75%, var(--phantom-orange) 100%);
             min-height: 100vh;
@@ -127,7 +96,11 @@ export default function Layout({ children, currentPageName }) {
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton 
                         asChild 
-                        className="hover:bg-white/20 transition-all duration-300 rounded-2xl text-black/80 hover:text-black"
+                        className={`hover:bg-white/20 transition-all duration-300 rounded-2xl ${
+                          location.pathname === item.url 
+                            ? 'bg-white/30 text-black shadow-lg backdrop-blur-sm' 
+                            : 'text-black/80 hover:text-black'
+                        }`}
                       >
                         <Link to={item.url} className="flex items-center gap-3 px-4 py-3">
                           <item.icon className="w-5 h-5" />
@@ -140,7 +113,6 @@ export default function Layout({ children, currentPageName }) {
               </SidebarGroupContent>
             </SidebarGroup>
 
-            {/* Conditionally render the Quick Stats section */}
             {quickStatsVisible && (
               <SidebarGroup className="mt-8">
                 <SidebarGroupLabel className="text-black/60 font-semibold uppercase tracking-wider px-3 py-3">
@@ -149,10 +121,7 @@ export default function Layout({ children, currentPageName }) {
                 <SidebarGroupContent>
                   <div className="px-4 py-3 space-y-3">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-black/70 flex items-center gap-2">
-                        <Zap className="w-4 h-4" />
-                        Level
-                      </span>
+                      <span className="text-black/70 flex items-center gap-2"><Zap className="w-4 h-4" />Level</span>
                       <span className="font-bold text-yellow-600">Level 4</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
