@@ -2,7 +2,6 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import RootLayout from './components/RootLayout';
 
-// Import all the page components you've been working on
 import Dashboard from './Pages/Dashboard';
 import Achievements from './Pages/Achievements';
 import PhantomChat from './Pages/PhantomChat';
@@ -18,15 +17,20 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         {/* Home Page */}
         <Route index element={<h1>Welcome to My Phantom AI</h1>} />
-        
+
         {/* All other pages are children of RootLayout */}
-        <Route path="dashboard" element={<Dashboard />} />
         <Route path="student-dashboard" element={<StudentDashboard />} />
         <Route path="achievements" element={<Achievements />} />
         <Route path="phantom-chat" element={<PhantomChat />} />
         <Route path="quest-detail" element={<QuestDetail />} />
         <Route path="quest-map" element={<QuestMap />} />
-        <Route path="student-profile" element={<StudentProfile />} />
+        
+        {/*
+          FIX: Added the two missing routes below.
+        */}
+        <Route path="parent-dashboard" element={<Dashboard />} />
+        <Route path="profile" element={<StudentProfile />} />
+        <Route path="student-profile" element={<StudentProfile />} /> 
         <Route path="weekly-summaries" element={<WeeklySummaries />} />
       </Route>
     </Routes>
