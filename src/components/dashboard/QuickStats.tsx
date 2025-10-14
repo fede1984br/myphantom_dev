@@ -68,7 +68,7 @@ const totalActivities = summary?.subjects?.reduce((total: number, subject: Subje
     total + (subject.key_achievements?.length || 0), 0) || 0;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <StatCard
         title="This Week's Progress"
         value={`${summary?.overall_progress || 0}%`}
