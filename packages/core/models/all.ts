@@ -13,6 +13,17 @@ export interface Student {
   email: string;
   activeQuests: Quest[];
   completedQuests: Quest[];
+  grade_level?: number;
+  age?: number;
+  iep_settings?: {
+    focus_areas: string[];
+    support_strategies: string[];
+  };
+  accessibility_preferences?: {
+    font_size: 'small' | 'medium' | 'large';
+    dyslexia_friendly_mode: boolean;
+    text_to_speech: boolean;
+  };
 }
 
 export interface WeeklySummary {
