@@ -25,9 +25,9 @@ usersRouter.get("/", (req: Request, res: Response) => {
 usersRouter.get("/:id", (req: Request, res: Response) => {
   const userId = req.params.id;
   const mockUser: Student = {
-    id: userId,
+    uid: userId,
     email: `user.${userId}@example.com`,
-    name: `User ${userId}`, // This matches the 'name' property in the new Student interface
+    fullName: `User ${userId}`, // This matches the 'name' property in the new Student interface
     activeQuests: [],
     completedQuests: [],
   };
