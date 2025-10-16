@@ -8,8 +8,8 @@ export interface Quest {
 }
 
 export interface Student {
-  id: string;
-  name: string;
+  uid: string;
+  fullName: string;
   email: string;
   activeQuests: Quest[];
   completedQuests: Quest[];
