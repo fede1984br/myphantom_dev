@@ -9,40 +9,40 @@ if (admin.apps.length === 0) {
   admin.initializeApp();
 }
 
+const db = admin.firestore();
+
 const usersApp: Application = express();
 usersApp.use(express.json());
 
 const integrationsApp: Application = express();
 integrationsApp.use(express.json());
 
-// --- Users Service ---
 const usersRouter = express.Router();
 
 usersRouter.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Users service is up and running." });
 });
 
-usersRouter.get("/:id", (req: Request, res: Response) => {
-  const userId = req.params.id;
-  const mockUser: Student = {
-    uid: userId,
-    email: `user.${userId}@example.com`,
-    fullName: `User ${userId}`, // This matches the 'name' property in the new Student interface
-    activeQuests: [],
-    completedQuests: [],
-  };
-  res.status(200).json(mockUser);
+usersRouter.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    const studentProfile = await getStudentProfile(userId);
+    if (!studentProfile) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+    return res.status(200).json(studentProfile);
+  } catch (error) {
+    console.error(`Error fetching profile for user ${req.params.id}:`, error);
+    return res.status(500).json({ message: "Internal server error while fetching profile." });
+  }
 });
 
 usersApp.use('/', usersRouter);
 
-// --- Integrations Service ---
 const integrationsRouter = express.Router();
 
 const secretManagerClient = new SecretManagerServiceClient();
 const projectId = process.env.GCLOUD_PROJECT || 'myphantomdev';
-
-// --- Helper Functions ---
 
 let serviceAccountKey: any;
 async function getServiceAccountKey() {
@@ -93,7 +93,37 @@ async function getOAuth2Client() {
     return oauth2ClientInstance;
 }
 
-// --- API Endpoints ---
+async function getStudentProfile(uid: string): Promise<Student | null> {
+  const userRef = db.collection('users').doc(uid);
+  const profileRef = db.collection('student_profiles').doc(uid);
+
+  try {
+    const [userDoc, profileDoc] = await Promise.all([
+      userRef.get(),
+      profileRef.get()
+    ]);
+
+    if (!userDoc.exists) {
+      console.error(`No user found for UID: ${uid}`);
+      return null;
+    }
+
+    const userData = userDoc.data() as Omit<Student, 'id'>;
+    const profileData = profileDoc.exists ? profileDoc.data() : {};
+
+    const fullProfile: Student = {
+      id: uid,
+      ...userData,
+      ...profileData
+    };
+
+    return fullProfile;
+
+  } catch (error) {
+    console.error("Error fetching student profile:", error);
+    return null;
+  }
+}
 
 integrationsRouter.get("/", (req: Request, res: Response) => res.status(200).json({ message: "Integrations service is up and running." }));
 
