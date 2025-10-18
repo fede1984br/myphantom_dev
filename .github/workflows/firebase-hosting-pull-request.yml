@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Authenticate with Google Cloud
-        uses: 'google-github-actions/auth@v2'
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}'
-
-      - name: Deploy Preview to Firebase Hosting
-        run: npx firebase-tools hosting:channel:deploy pr-${{ github.event.number }} --expires 7d --project myphantomdev --json
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}'
+          projectId: myphantomdev
+          channelId: preview
