@@ -5,11 +5,11 @@
   "targets": {
     "myphantomdev": {
       "hosting": {
-        "student-portal": [
-          "myphantomdev"
-        ],
         "parent-portal": [
           "myphantom-parent"
+        ],
+        "myphantomdev": [
+          "myphantomdev"
         ]
       }
     }
