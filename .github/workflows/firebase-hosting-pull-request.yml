@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting on PR
+name: '[DEBUG] Deploy to Firebase Hosting on PR'
 on: pull_request
 permissions:
   checks: write
@@ -9,12 +9,23 @@ jobs:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: 1. Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Authenticate with Google Cloud
+      - name: 2. [DEBUG] Show what file is being used
+        run: |
+          echo ">>> Contents of firebase-hosting-pull-request.yml:"
+          cat .github/workflows/firebase-hosting-pull-request.yml
+          echo "---"
+
+      - name: 3. [DEBUG] Print the pull request event number
+        run: |
+          echo "The pull request number is: ${{ github.event.number }}"
+
+      - name: 4. Authenticate with Google Cloud
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}'
 
-      - name: Deploy Preview to Firebase Hosting
+      - name: 5. Deploy Preview to Firebase Hosting
         run: npx firebase-tools hosting:channel:deploy pr-${{ github.event.number }} --expires 7d --project myphantomdev
