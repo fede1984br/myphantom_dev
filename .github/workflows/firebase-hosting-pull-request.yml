@@ -13,17 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Clear npm cache
-        run: npm cache clean --force
-      - run: npm ci
-      - name: Build Student Portal
-        run: npm run build:student
-      - name: Build Parent Portal
-        run: npm run build:parent
-      # ---- CORRECTED DEPLOYMENT STEP ----
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
