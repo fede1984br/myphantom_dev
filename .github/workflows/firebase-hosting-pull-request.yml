@@ -25,4 +25,8 @@ jobs:
         run: npm run build:parent
       # ---- CORRECTED DEPLOYMENT STEP ----
       - name: Deploy to Firebase Hosting
-        run: npx firebase-tools@latest deploy --only hosting:myphantomdev --project myphantomdev --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}'
+          projectId: myphantomdev
