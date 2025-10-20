@@ -4,19 +4,19 @@
   },
   "targets": {
     "myphantomdev": {
-      "hosting": {
-        "parent-portal": [
-          "myphantom-parent",
-          "parent-portal"
-        ],
-        "myphantomdev": [
-          "myphantomdev"
-        ],
-        "student-portal": [
-          "student-portal"
-        ]
-      }
+      "hosting": [
+        "myphantomdev"
+      ]
+    },
+    "student-portal": {
+      "hosting": [
+        "student-portal"
+      ]
+    },
+    "parent-portal": {
+      "hosting": [
+        "parent-portal"
+      ]
     }
-  },
-  "etags": {}
+  }
 }
