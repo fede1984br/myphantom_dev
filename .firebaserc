@@ -6,10 +6,14 @@
     "myphantomdev": {
       "hosting": {
         "parent-portal": [
-          "myphantom-parent"
+          "myphantom-parent",
+          "parent-portal"
         ],
         "myphantomdev": [
           "myphantomdev"
+        ],
+        "student-portal": [
+          "student-portal"
         ]
       }
     }
