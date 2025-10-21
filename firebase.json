@@ -8,18 +8,18 @@
   },
   "hosting": [
     {
-      "target": "myphantomdev",
+      "site": "myphantomdev",
       "public": "public",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
     },
     {
-      "target": "student-portal",
+      "site": "student-portal",
       "public": "dist/student",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [{"source": "**", "destination": "/index.html"}]
     },
     {
-      "target": "parent-portal",
+      "site": "parent-portal",
       "public": "dist/parent",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [{"source": "**", "destination": "/index.html"}]
