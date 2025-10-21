@@ -2,57 +2,27 @@
   "functions": {
     "source": "packages/api-service",
     "codebase": "api-service",
-    "ignore": [
-      "node_modules",
-      ".git",
-      "firebase-debug.log",
-      "firebase-debug.*.log"
-    ],
-    "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" install",
-      "npm --prefix \"$RESOURCE_DIR\" run build"
-    ],
+    "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"],
+    "predeploy": ["npm --prefix \"$RESOURCE_DIR\" install", "npm --prefix \"$RESOURCE_DIR\" run build"],
     "runtime": "nodejs20"
   },
   "hosting": [
     {
       "target": "myphantomdev",
       "public": "public",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ]
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
     },
     {
       "target": "student-portal",
-      "public": "path/to/your/student-app/build-folder",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
+      "public": "dist/student",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [{"source": "**", "destination": "/index.html"}]
     },
     {
       "target": "parent-portal",
-      "public": "path/to/your/parent-app/build-folder",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
+      "public": "dist/parent",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [{"source": "**", "destination": "/index.html"}]
     }
   ]
 }
