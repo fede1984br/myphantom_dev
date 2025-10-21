@@ -17,4 +17,4 @@ jobs:
           credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}'
 
       - name: Deploy Preview to Firebase Hosting
-        run: npx firebase-tools hosting:channel:deploy pr-${{ github.event.number }} --expires 7d --project myphantomdev
+        run: npx firebase-tools hosting:channel:deploy pr-${{ github.event.number }} --expires 7d --project myphantomdev --only myphantomdev
