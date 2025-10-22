@@ -13,13 +13,13 @@
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
     },
     {
-      "site": "student-portal",
+      "site": "myphantom-students",
       "public": "dist/student",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [{"source": "**", "destination": "/index.html"}]
     },
     {
-      "site": "parent-portal",
+      "site": "myphantom-parent",
       "public": "dist/parent",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [{"source": "**", "destination": "/index.html"}]
