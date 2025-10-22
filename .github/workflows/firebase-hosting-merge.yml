@@ -13,4 +13,4 @@ jobs:
             with:
               credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYPHANTOMDEV }}'
           - name: Deploy to Live Channel
-            run: npx firebase-tools deploy --only hosting:myphantomdev,hosting:student-portal,hosting:parent-portal --project myphantomdev
+            run: npx firebase-tools deploy --only hosting:myphantomdev,hosting:myphantom-students,hosting:myphantom-parent --project myphantomdev
