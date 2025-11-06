@@ -1,0 +1,19 @@
+{
+  "name": "@my-phantom/users",
+  "version": "1.0.0",
+  "description": "Handles user-related services",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+  "@my-phantom/core": "file:./core",
+  "typescript": "^5.0.0"
+},
+"devDependencies": {
+  "@types/node": "..."
+},
+  "keywords": [],
+  "author": ""
+}

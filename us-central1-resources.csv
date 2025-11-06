@@ -1,0 +1,9 @@
+name,asset_type,location
+//cloudfunctions.googleapis.com/projects/myphantomdev/locations/us-east1/functions/users,cloudfunctions.googleapis.com/Function,us-east1
+//storage.googleapis.com/gcf-v2-sources-933171243276-us-east1,storage.googleapis.com/Bucket,us-east1
+//storage.googleapis.com/gcf-v2-uploads-933171243276.us-east1.cloudfunctions.appspot.com,storage.googleapis.com/Bucket,us-east1
+//artifactregistry.googleapis.com/projects/myphantomdev/locations/us-east1/repositories/gcf-artifacts,artifactregistry.googleapis.com/Repository,us-east1
+//storage.googleapis.com/gcf-sources-933171243276-us-east1,storage.googleapis.com/Bucket,us-east1
+//artifactregistry.googleapis.com/projects/myphantomdev/locations/us-east1/repositories/myphantom-services,artifactregistry.googleapis.com/Repository,us-east1
+//compute.googleapis.com/projects/myphantomdev/regions/us-east1/subnetworks/default,compute.googleapis.com/Subnetwork,us-east1
+//cloudfunctions.googleapis.com/projects/myphantomdev/locations/us-east1/functions/integrations,cloudfunctions.googleapis.com/Function,us-east1
