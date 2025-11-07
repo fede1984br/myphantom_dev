@@ -51,7 +51,7 @@ export default function ProfileHeader({ student, isLoading }: ProfileHeaderProps
         <div className="text-center">
           {/* Avatar */}
           <div className="w-24 h-24 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span className="text-3xl font-bold text-white">
+            <span className="text-3xl font-bold text-black">
               {student.full_name?.charAt(0).toUpperCase()}
             </span>
           </div>

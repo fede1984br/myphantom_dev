@@ -106,10 +106,10 @@ export default function Achievements() {
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-4xl font-bold text-white mb-2">
+            <h1 className="text-4xl font-bold text-black mb-2">
               🏆 Achievement Gallery
             </h1>
-            <p className="text-white/80 text-lg">
+            <p className="text-black text-lg">
               Your collection of earned badges and accomplishments!
             </p>
           </div>

@@ -41,7 +41,7 @@ export default function StudentProfile() {
                 {student ? `Complete profile and learning insights for ${student.full_name}` : "Student information and learning profile"}
               </p>
             </div>
-            <Button className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white hover:from-primary-600 hover:to-secondary-600 shadow-lg">
+            <Button className="bg-gradient-to-r from-primary-500 to-secondary-500 text-black hover:from-primary-600 hover:to-secondary-600 shadow-lg">
               <Edit3 className="w-4 h-4 mr-2" />
               Edit Profile
             </Button>

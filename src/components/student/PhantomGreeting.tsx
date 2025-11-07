@@ -50,7 +50,7 @@ export default function PhantomGreeting({ message, streak, onNewMessage }: Phant
               </motion.div>
               
               <div className="text-white">
-                <h1 className="text-2xl font-bold mb-1">
+                <h1 className="text-2xl font-bold mb-1 text-white">
                   Hello, Emma! 👋
                 </h1>
                 <motion.p 
